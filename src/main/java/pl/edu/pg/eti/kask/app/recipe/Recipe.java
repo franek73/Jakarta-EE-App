@@ -1,15 +1,14 @@
-package pl.edu.pg.eti.kask.app.composition;
+package pl.edu.pg.eti.kask.app.recipe;
 
 import java.time.LocalDate;
-
 import lombok.*;
-import pl.edu.pg.eti.kask.app.genre.Genre;
+import pl.edu.pg.eti.kask.app.category.Category;
 import pl.edu.pg.eti.kask.app.user.*;
 
 @Data
-public class Composition {
+public class Recipe {
 
-    private String title;
+    private String name;
 
     private LocalDate creationDate;
 
@@ -17,7 +16,7 @@ public class Composition {
 
     private Difficulty difficulty;
 
-    private Genre genre;
+    private Category category;
 
     private User author;
 }
