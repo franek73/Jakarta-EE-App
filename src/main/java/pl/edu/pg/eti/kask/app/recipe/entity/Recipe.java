@@ -1,12 +1,16 @@
-package pl.edu.pg.eti.kask.app.recipe;
+package pl.edu.pg.eti.kask.app.recipe.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
+
 import lombok.*;
-import pl.edu.pg.eti.kask.app.category.Category;
-import pl.edu.pg.eti.kask.app.user.*;
+import pl.edu.pg.eti.kask.app.user.entity.User;
 
 @Data
-public class Recipe {
+public class Recipe implements Serializable {
+
+    private UUID id;
 
     private String name;
 

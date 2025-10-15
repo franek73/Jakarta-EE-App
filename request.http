@@ -1,0 +1,50 @@
+# Get all users.
+
+GET http://localhost:9080/jakarta-ee-project/api/users
+
+###
+
+# Get single user.
+
+GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+
+###
+
+# Create user avatar.
+
+PUT http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="avatar1.png"
+
+< C:\Users\franc\Desktop\SEMESTR 7\jakarta-ee-project\src\main\resources\pl.edu.pg.eti.kask.app.configuration.avatar/avatar1.png
+--boundary--
+
+###
+
+# Update user avatar.
+
+PATCH http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="avatar2.png"
+
+< C:\Users\franc\Desktop\SEMESTR 7\jakarta-ee-project\src\main\resources\pl.edu.pg.eti.kask.app.configuration.avatar/avatar2.png
+--boundary--
+
+###
+
+# Get single user avatar.
+
+GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
+
+###
+
+# Delete single user avatar.
+
+DELETE http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
+
+###
+
