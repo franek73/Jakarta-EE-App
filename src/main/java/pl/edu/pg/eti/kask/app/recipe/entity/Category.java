@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@Builder
 public class Category implements Serializable {
 
     private UUID id;
@@ -15,5 +16,7 @@ public class Category implements Serializable {
 
     private String description;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Recipe> recipes;
 }

@@ -1,5 +1,7 @@
 package pl.edu.pg.eti.kask.app.user.repository.memory;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import pl.edu.pg.eti.kask.app.datastore.component.DataStore;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.repository.api.UserRepository;
@@ -8,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequestScoped
 public class UserInMemoryRepository implements UserRepository {
 
     private final DataStore store;
 
+    @Inject
     public UserInMemoryRepository(DataStore store) {
         this.store = store;
     }
@@ -34,8 +38,8 @@ public class UserInMemoryRepository implements UserRepository {
     }
 
     @Override
-    public void delete(User entity) {
-        throw new UnsupportedOperationException("Not implemented.");
+    public void delete(UUID id) {
+        store.deleteUser(id);
     }
 
     @Override

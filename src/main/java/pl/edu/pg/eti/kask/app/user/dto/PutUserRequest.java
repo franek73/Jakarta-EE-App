@@ -1,8 +1,13 @@
 package pl.edu.pg.eti.kask.app.user.dto;
+import lombok.*;
 
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class PutUserRequest {
 
     private String login;

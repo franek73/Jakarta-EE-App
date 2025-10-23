@@ -1,12 +1,13 @@
 package pl.edu.pg.eti.kask.app.user.controller.implementation;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import pl.edu.pg.eti.kask.app.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.app.user.controller.api.UserController;
 import pl.edu.pg.eti.kask.app.user.dto.GetUserResponse;
 import pl.edu.pg.eti.kask.app.user.dto.GetUsersResponse;
 import pl.edu.pg.eti.kask.app.user.dto.PatchUserRequest;
 import pl.edu.pg.eti.kask.app.user.dto.PutUserRequest;
-import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.service.api.UserService;
 import pl.edu.pg.eti.kask.app.controller.servlet.exception.BadRequestException;
 import pl.edu.pg.eti.kask.app.controller.servlet.exception.NotFoundException;
@@ -15,12 +16,14 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequestScoped
 public class UserControllerImpl implements UserController {
 
     private final UserService service;
 
     private final DtoFunctionFactory factory;
 
+    @Inject
     public UserControllerImpl(UserService service, DtoFunctionFactory factory) {
         this.service = service;
         this.factory = factory;

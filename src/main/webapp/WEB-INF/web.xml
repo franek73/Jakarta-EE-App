@@ -10,7 +10,7 @@
         <param-value>C:/temp/avatar</param-value>
     </context-param>
 
-    <listener>
+    <!--<listener>
         <listener-class>pl.edu.pg.eti.kask.app.configuration.listener.CreateDataSource</listener-class>
     </listener>
 
@@ -20,7 +20,7 @@
 
     <listener>
         <listener-class>pl.edu.pg.eti.kask.app.configuration.listener.CreateControllers</listener-class>
-    </listener>
+    </listener> -->
 
 </web-app>
 

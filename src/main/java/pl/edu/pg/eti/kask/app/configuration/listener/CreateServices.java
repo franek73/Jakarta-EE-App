@@ -19,7 +19,7 @@ public class CreateServices implements ServletContextListener {
 
         String avatarDir = event.getServletContext().getInitParameter("avatarDir");
 
-        event.getServletContext().setAttribute("userService", new UserServiceImpl(userRepository, avatarDir));
+        event.getServletContext().setAttribute("userService", new UserServiceImpl(userRepository));
     }
 
 }

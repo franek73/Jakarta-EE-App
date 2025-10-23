@@ -1,5 +1,7 @@
 package pl.edu.pg.eti.kask.app.user.service.implementation;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.repository.api.UserRepository;
 import pl.edu.pg.eti.kask.app.user.service.api.UserService;
@@ -14,14 +16,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     private final String avatarDir;
 
-    public UserServiceImpl(UserRepository repository, String avatarDir) {
+    @Inject
+    public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
-        this.avatarDir = avatarDir;
+        this.avatarDir = "C:/temp/avatar";
 
         try {
             Path path = Paths.get(avatarDir);
@@ -49,18 +53,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user) {
-        repository.create(user);
+    public void create(User entity) {
+        repository.create(entity);
     }
 
     @Override
-    public void update(User user) {
-        repository.update(user);
+    public void update(User entity) {
+        repository.update(entity);
     }
 
     @Override
     public void delete(UUID id) {
-        repository.delete(repository.find(id).orElseThrow());
+        repository.delete(id);
     }
 
     @Override

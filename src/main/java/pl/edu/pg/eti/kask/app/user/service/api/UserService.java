@@ -1,25 +1,15 @@
 package pl.edu.pg.eti.kask.app.user.service.api;
 
+import pl.edu.pg.eti.kask.app.service.api.Service;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserService {
-
-    public Optional<User> find(UUID id);
+public interface UserService extends Service<User, UUID> {
 
     public Optional<User> findByLogin(String login);
-
-    public List<User> findAll() ;
-
-    public void create(User user);
-
-    public void update(User user);
-
-    public void delete(UUID id) ;
 
     public void createAvatar(UUID id, InputStream is, String originalFilename);
 

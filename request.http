@@ -10,6 +10,39 @@ GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6
 
 ###
 
+# Delete single user.
+
+DELETE http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+
+###
+
+# Put single user.
+
+PUT http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+Content-Type: application/json
+
+{
+  "login": "franek73",
+  "name": "Franek",
+  "email" : "franek@gmail.com",
+  "password": "franek123"
+}
+
+###
+
+# Patch single user.
+
+PATCH http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+Content-Type: application/json
+
+{
+  "login": "franek",
+  "name": "Franek",
+  "email" : "franek73@gmail.com"
+}
+
+###
+
 # Create user avatar.
 
 PUT http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
@@ -48,3 +81,71 @@ DELETE http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53
 
 ###
 
+# Get all categories.
+
+GET http://localhost:9080/jakarta-ee-project/api/categories
+
+###
+
+# Get single category.
+
+GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
+
+###
+
+# Get all recipes.
+
+GET http://localhost:9080/jakarta-ee-project/api/recipes
+
+###
+
+# Get single recipe.
+
+GET http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+
+###
+
+# Delete single recipe.
+
+DELETE http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+
+###
+
+# Put single recipe.
+
+PUT http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+Content-Type: application/json
+
+{
+  "name": "Porridge",
+  "description": "Porridge",
+  "difficulty" : "Easy",
+  "category": "f5875513-bf7b-4ae1-b8a5-5b70a1b90e76"
+}
+
+###
+
+# Patch single recipe.
+
+PATCH http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+Content-Type: application/json
+
+{
+  "name": "Porridge with raspberries",
+  "description": "Porridge with raspberries",
+  "difficulty" : "Medium"
+}
+
+###
+
+# Get all category recipes.
+
+GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes
+
+###
+
+# Get all user recipes.
+
+GET http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197/recipes
+
+###

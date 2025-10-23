@@ -8,6 +8,7 @@ import lombok.*;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 
 @Data
+@Builder
 public class Recipe implements Serializable {
 
     private UUID id;
