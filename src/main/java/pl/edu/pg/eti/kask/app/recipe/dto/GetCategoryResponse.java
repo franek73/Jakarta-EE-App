@@ -20,12 +20,6 @@ public class GetCategoryResponse {
         private UUID id;
 
         private String name;
-
-        private LocalDate creationDate;
-
-        private String description;
-
-        private Difficulty difficulty;
     }
 
     private UUID id;

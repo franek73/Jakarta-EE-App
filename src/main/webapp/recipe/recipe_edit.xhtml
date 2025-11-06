@@ -34,11 +34,19 @@
 
                 <div class="row">
                     <div class="col-4 p-2">
-                        <div class="form-outline">
-                            <h:inputTextarea id="difficulty" value="#{recipeEdit.recipe.difficulty}"
-                                             styleClass="form-control" rows="4"/>
-                            <h:outputLabel for="difficulty" value="Difficulty:" styleClass="form-label"/>
-                        </div>
+                        <fieldset>
+                            <legend class="form-label fs-6">Difficulty:</legend>
+                            <ui:repeat value="#{recipeEdit.difficulties}" var="difficulty">
+                                <div class="form-check">
+                                    <h:selectOneRadio id="radioId" group="difficulty"
+                                                      value="#{recipeEdit.recipe.difficulty}"
+                                                      styleClass="form-check-input"
+                                                      enabledClass="form-check-label">
+                                        <f:selectItem itemValue="#{difficulty}" itemLabel="#{difficulty}"/>
+                                    </h:selectOneRadio>
+                                </div>
+                            </ui:repeat>
+                        </fieldset>
                     </div>
                 </div>
 

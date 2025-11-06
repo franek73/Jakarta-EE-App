@@ -11,12 +11,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequestScoped
-public class UserInMemoryRepository implements UserRepository {
+public class UserRepositoryInMemory implements UserRepository {
 
     private final DataStore store;
 
     @Inject
-    public UserInMemoryRepository(DataStore store) {
+    public UserRepositoryInMemory(DataStore store) {
         this.store = store;
     }
 

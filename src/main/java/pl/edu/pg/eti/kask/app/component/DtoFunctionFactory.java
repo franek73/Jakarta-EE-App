@@ -50,4 +50,12 @@ public class DtoFunctionFactory {
     public CategoriesToResponseFunction categoriesToResponse() {
         return new CategoriesToResponseFunction();
     }
+
+    public RequestToCategoryFunction requestToCategory() {
+        return new RequestToCategoryFunction();
+    }
+
+    public UpdateCategoryWithRequestFunction updateCategory() {
+        return new UpdateCategoryWithRequestFunction();
+    }
 }

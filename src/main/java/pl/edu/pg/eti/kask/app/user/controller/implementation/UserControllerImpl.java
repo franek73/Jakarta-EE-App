@@ -9,8 +9,8 @@ import pl.edu.pg.eti.kask.app.user.dto.GetUsersResponse;
 import pl.edu.pg.eti.kask.app.user.dto.PatchUserRequest;
 import pl.edu.pg.eti.kask.app.user.dto.PutUserRequest;
 import pl.edu.pg.eti.kask.app.user.service.api.UserService;
-import pl.edu.pg.eti.kask.app.controller.servlet.exception.BadRequestException;
-import pl.edu.pg.eti.kask.app.controller.servlet.exception.NotFoundException;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
 
 import java.io.InputStream;
 import java.util.Optional;

@@ -56,7 +56,7 @@ Content-Disposition: form-data; name="avatar"; filename="avatar1.png"
 
 ###
 
-# Update user avatar.
+# Patch user avatar.
 
 PATCH http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
 Content-Type: multipart/form-data; boundary=boundary
@@ -93,6 +93,36 @@ GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b
 
 ###
 
+# Delete single category.
+
+DELETE http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
+
+###
+
+# Put single category.
+
+PUT http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
+Content-Type: application/json
+
+{
+  "name": "Breakfast",
+  "description": "Breakfast"
+}
+
+###
+
+# Patch single category.
+
+PATCH http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
+Content-Type: application/json
+
+{
+  "name": "Sweet breakfast",
+  "description": "Sweet breakfast"
+}
+
+###
+
 # Get all recipes.
 
 GET http://localhost:9080/jakarta-ee-project/api/recipes
@@ -113,21 +143,20 @@ DELETE http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-b
 
 # Put single recipe.
 
-PUT http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+PUT http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
 Content-Type: application/json
 
 {
   "name": "Porridge",
   "description": "Porridge",
-  "difficulty" : "Easy",
-  "category": "f5875513-bf7b-4ae1-b8a5-5b70a1b90e76"
+  "difficulty" : "Easy"
 }
 
 ###
 
 # Patch single recipe.
 
-PATCH http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+PATCH http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
 Content-Type: application/json
 
 {
@@ -138,13 +167,13 @@ Content-Type: application/json
 
 ###
 
-# Get all category recipes.
+# Get all category's recipes.
 
 GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes
 
 ###
 
-# Get all user recipes.
+# Get all user's recipes.
 
 GET http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197/recipes
 

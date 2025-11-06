@@ -49,10 +49,10 @@
                             </h:column>
 
                             <h:column>
-                                <h:commandButton styleClass="btn" value="Delete"
-                                                     action="#{categoryView.deleteRecipeAction(recipe.id)}">
-                                    <f:ajax execute="@form"/>
-                                </h:commandButton>
+                                <h:form>
+                                    <h:commandButton styleClass="btn" value="Delete"
+                                                     action="#{categoryView.deleteRecipeAction(recipe)}"/>
+                                </h:form>
                             </h:column>
 
                             <f:facet name="footer">

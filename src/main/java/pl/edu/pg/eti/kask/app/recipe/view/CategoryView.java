@@ -1,7 +1,7 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequestScoped
+@ViewScoped
 @Named
 public class CategoryView implements Serializable {
 
@@ -62,9 +62,9 @@ public class CategoryView implements Serializable {
         }
     }
 
-    public String deleteRecipeAction(UUID id) {
-        recipeService.delete(id);
-        return "category_view?faces-redirect=true&amp;id" + id;
+    public String deleteRecipeAction(RecipeModel recipe) {
+        recipeService.delete(recipe.getId());
+        return "category_view?faces-redirect=true&amp;id=" + id;
     }
 
 }

@@ -112,13 +112,12 @@ public class DataStore {
     }
 
     public synchronized void deleteCategory(UUID id) throws IllegalArgumentException {
-        recipes.removeIf(recipe ->
-                recipe.getCategory() != null && recipe.getCategory().getId().equals(id)
-        );
-
         if (!categories.removeIf(category -> category.getId().equals(id))) {
             throw new IllegalArgumentException("The category with id \"%s\" does not exist".formatted(id));
+        } else {
+            recipes.removeIf(recipe -> recipe.getCategory().getId().equals(id));
         }
+
     }
 
     private Recipe cloneWithRelationships(Recipe value) {

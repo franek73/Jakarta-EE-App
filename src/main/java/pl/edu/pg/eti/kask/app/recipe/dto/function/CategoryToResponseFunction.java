@@ -3,6 +3,8 @@ package pl.edu.pg.eti.kask.app.recipe.dto.function;
 import pl.edu.pg.eti.kask.app.recipe.dto.GetCategoryResponse;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class CategoryToResponseFunction implements Function<Category, GetCategoryResponse> {
@@ -12,14 +14,14 @@ public class CategoryToResponseFunction implements Function<Category, GetCategor
         return GetCategoryResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .description(entity.getDescription())
                 .recipes(
-                        entity.getRecipes().stream()
+                        Optional.ofNullable(entity.getRecipes())
+                                .orElse(Collections.emptyList())
+                                .stream()
                                 .map(recipeEntity -> GetCategoryResponse.Recipe.builder()
                                         .id(recipeEntity.getId())
                                         .name(recipeEntity.getName())
-                                        .creationDate(recipeEntity.getCreationDate())
-                                        .description(recipeEntity.getDescription())
-                                        .difficulty(recipeEntity.getDifficulty())
                                         .build())
                                 .toList()
                 )

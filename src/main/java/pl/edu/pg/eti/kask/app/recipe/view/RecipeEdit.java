@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
+import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeEditModel;
 import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
@@ -24,6 +25,9 @@ public class RecipeEdit implements Serializable {
     private final RecipeService service;
 
     private final ModelFunctionFactory factory;
+
+    @Getter
+    private Difficulty[] difficulties;
 
     @Setter
     @Getter
@@ -42,6 +46,7 @@ public class RecipeEdit implements Serializable {
         Optional<Recipe> recipe = service.find(id);
         if (recipe.isPresent()) {
             this.recipe = factory.recipeToEditModel().apply(recipe.get());
+            difficulties = Difficulty.values();
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Recipe not found");
         }
