@@ -131,13 +131,13 @@ GET http://localhost:9080/jakarta-ee-project/api/recipes
 
 # Get single recipe.
 
-GET http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
 
 ###
 
 # Delete single recipe.
 
-DELETE http://localhost:9080/jakarta-ee-project/api/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+DELETE http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
 
 ###
 

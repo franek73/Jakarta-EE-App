@@ -2,6 +2,8 @@ package pl.edu.pg.eti.kask.app.recipe.service.implementation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.respository.api.CategoryRepository;
 import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
@@ -11,37 +13,46 @@ import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
+@Log
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository repository;
 
     @Inject
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public CategoryServiceImpl(CategoryRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public Optional<Category> find(UUID id) {
-        return categoryRepository.find(id);
+        Optional<Category> category = repository.find(id);
+        return category;
     }
 
     @Override
     public List<Category> findAll() {
-        return categoryRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
+    @Transactional
     public void create(Category entity) {
-        categoryRepository.create(entity);
+        if (repository.find(entity.getId()).isPresent()) {
+            throw new IllegalArgumentException("Category already exists.");
+        }
+
+        repository.create(entity);
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
-        categoryRepository.delete(id);
+        repository.delete(id);
     }
 
     @Override
+    @Transactional
     public void update(Category entity) {
-        categoryRepository.update(entity);
+        repository.update(entity);
     }
 }

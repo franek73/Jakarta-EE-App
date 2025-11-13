@@ -14,7 +14,7 @@ public class UserToResponseFunction implements Function<User, GetUserResponse> {
                 .login(user.getLogin())
                 .name(user.getName())
                 .email(user.getEmail())
-                .registeredDate(user.getRegisteredDate())
+                .registrationDate(user.getRegistrationDate())
                 .build();
     }
 }

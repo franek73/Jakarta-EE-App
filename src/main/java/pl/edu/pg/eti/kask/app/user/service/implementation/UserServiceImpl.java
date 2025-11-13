@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.app.user.service.implementation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.repository.api.UserRepository;
 import pl.edu.pg.eti.kask.app.user.service.api.UserService;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
                 Files.createDirectories(path);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Nie udało się utworzyć katalogu na avatary: " + avatarDir, e);
+            throw new RuntimeException("Could not create a catalog for avatars images: " + avatarDir, e);
         }
     }
 
@@ -53,16 +54,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void create(User entity) {
         repository.create(entity);
     }
 
     @Override
+    @Transactional
     public void update(User entity) {
         repository.update(entity);
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         repository.delete(id);
     }

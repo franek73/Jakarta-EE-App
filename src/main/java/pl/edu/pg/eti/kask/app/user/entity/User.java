@@ -1,6 +1,8 @@
 package pl.edu.pg.eti.kask.app.user.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 
 import java.io.Serializable;
@@ -8,23 +10,34 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Builder
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
-
+    @Id
     private UUID id;
 
+    @Column(nullable = false)
     private String login;
 
     private String name;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
-    private LocalDate registeredDate;
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
 
     private Role role;
 
     @ToString.Exclude
+    @Column(nullable = false)
     private String password;
 
     @ToString.Exclude
@@ -33,5 +46,6 @@ public class User implements Serializable {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     List<Recipe> userRecipes;
 }

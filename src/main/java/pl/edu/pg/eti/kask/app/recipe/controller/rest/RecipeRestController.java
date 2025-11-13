@@ -2,12 +2,14 @@ package pl.edu.pg.eti.kask.app.recipe.controller.rest;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.controller.api.RecipeController;
 import pl.edu.pg.eti.kask.app.recipe.dto.GetRecipeResponse;
@@ -16,11 +18,14 @@ import pl.edu.pg.eti.kask.app.recipe.dto.PatchRecipeRequest;
 import pl.edu.pg.eti.kask.app.recipe.dto.PutRecipeRequest;
 import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
 import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+
 import java.util.UUID;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+import java.util.logging.Level;
 
 @Path("")
+@Log
 public class RecipeRestController implements RecipeController {
 
     private final RecipeService recipeService;
@@ -68,11 +73,26 @@ public class RecipeRestController implements RecipeController {
     }
 
     @Override
-    public GetRecipeResponse getRecipe(UUID id) {
-        return recipeService.find(id)
-                .map(factory.recipeToResponse())
-                .orElseThrow(NotFoundException::new);
+    public GetRecipeResponse getRecipe(UUID id, UUID categoryId) {
+        if (categoryService.find(categoryId).isPresent()) {
+            if (recipeService.find(id).isPresent()) {
+                var recipe = recipeService.find(id).map(factory.recipeToResponse()).get();
+                if (recipe.getCategory().getId().equals(categoryId)) {
+                    return recipe;
+                }
+                else {
+                    throw new NotFoundException();
+                }
+            }
+            else {
+                throw new NotFoundException();
+            }
+        }
+        else {
+            throw new NotFoundException();
+        }
     }
+
 
     @Override
     @SneakyThrows
@@ -85,11 +105,16 @@ public class RecipeRestController implements RecipeController {
 
                         response.setHeader("Location", uriInfo.getBaseUriBuilder()
                                 .path(RecipeController.class, "getRecipe")
-                                .build(id)
+                                .build(categoryId, id)
                                 .toString());
+
                         throw new WebApplicationException(Response.Status.CREATED);
-                    } catch (IllegalArgumentException ex) {
-                        throw new BadRequestException(ex);
+                    } catch (TransactionalException ex) {
+                        if (ex.getCause() instanceof IllegalArgumentException) {
+                            log.log(Level.WARNING, ex.getMessage(), ex);
+                            throw new BadRequestException(ex);
+                        }
+                        throw ex;
                     }
                 },
                 () -> {
@@ -118,12 +143,19 @@ public class RecipeRestController implements RecipeController {
     }
 
     @Override
-    public void deleteRecipe(UUID id) {
-        recipeService.find(id).ifPresentOrElse(
-                entity -> recipeService.delete(id),
-                () -> {
-                    throw new NotFoundException();
-                }
+    public void deleteRecipe(UUID id, UUID categoryId) {
+        categoryService.find(categoryId).ifPresentOrElse(
+                category -> recipeService.find(id).ifPresentOrElse(
+                        recipe -> {
+                            if (recipe.getCategory().getId().equals(categoryId)) {
+                                recipeService.delete(id);
+                            } else {
+                                throw new NotFoundException();
+                            }
+                        },
+                        () -> { throw new NotFoundException(); }
+                ),
+                () -> { throw new NotFoundException(); }
         );
 
     }

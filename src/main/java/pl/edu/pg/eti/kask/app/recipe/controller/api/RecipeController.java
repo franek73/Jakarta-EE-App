@@ -28,9 +28,9 @@ public interface RecipeController {
     GetRecipesResponse getUserRecipes(@PathParam("id") UUID id);
 
     @GET
-    @Path("/recipes/{id}")
+    @Path("/categories/{categoryId}/recipes/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    GetRecipeResponse getRecipe(@PathParam("id") UUID id);
+    GetRecipeResponse getRecipe(@PathParam("id") UUID id, @PathParam("categoryId") UUID categoryId);
 
     @PUT
     @Path("/categories/{categoryId}/recipes/{id}")
@@ -43,7 +43,7 @@ public interface RecipeController {
     void patchRecipe(@PathParam("id") UUID id, @PathParam("categoryId") UUID categoryId, PatchRecipeRequest request);
 
     @DELETE
-    @Path("/recipes/{id}")
-    void deleteRecipe(@PathParam("id") UUID id);
+    @Path("/categories/{categoryId}/recipes/{id}")
+    void deleteRecipe(@PathParam("id") UUID id, @PathParam("categoryId") UUID categoryId);
 
 }

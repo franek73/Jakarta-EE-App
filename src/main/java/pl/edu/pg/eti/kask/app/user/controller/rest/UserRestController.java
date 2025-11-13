@@ -1,8 +1,18 @@
-package pl.edu.pg.eti.kask.app.user.controller.implementation;
+package pl.edu.pg.eti.kask.app.user.controller.rest;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.component.DtoFunctionFactory;
+import pl.edu.pg.eti.kask.app.recipe.controller.api.RecipeController;
+import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
 import pl.edu.pg.eti.kask.app.user.controller.api.UserController;
 import pl.edu.pg.eti.kask.app.user.dto.GetUserResponse;
 import pl.edu.pg.eti.kask.app.user.dto.GetUsersResponse;
@@ -15,18 +25,31 @@ import jakarta.ws.rs.NotFoundException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 
-@RequestScoped
-public class UserControllerImpl implements UserController {
+@Path("")
+@Log
+public class UserRestController implements UserController {
 
     private final UserService service;
 
     private final DtoFunctionFactory factory;
 
+    private final UriInfo uriInfo;
+
+    private HttpServletResponse response;
+
+    @Context
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
     @Inject
-    public UserControllerImpl(UserService service, DtoFunctionFactory factory) {
+    public UserRestController(UserService service, DtoFunctionFactory factory,
+                              @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
         this.service = service;
         this.factory = factory;
+        this.uriInfo = uriInfo;
     }
 
     @Override
@@ -45,8 +68,19 @@ public class UserControllerImpl implements UserController {
     public void putUser(UUID id, PutUserRequest request) {
         try {
             service.create(factory.requestToUser().apply(id, request));
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+
+            response.setHeader("Location", uriInfo.getBaseUriBuilder()
+                    .path(UserController.class, "getUser")
+                    .build(id)
+                    .toString());
+
+            throw new WebApplicationException(Response.Status.CREATED);
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 

@@ -23,7 +23,7 @@ public class GetUsersResponse {
 
         private String email;
 
-        private LocalDate registeredDate;
+        private LocalDate registrationDate;
     }
 
     @Singular

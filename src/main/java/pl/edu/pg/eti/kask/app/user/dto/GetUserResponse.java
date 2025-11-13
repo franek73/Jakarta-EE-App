@@ -18,5 +18,5 @@ public class GetUserResponse {
 
     private String email;
 
-    private LocalDate registeredDate;
+    private LocalDate registrationDate;
 }
