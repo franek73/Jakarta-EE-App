@@ -48,7 +48,7 @@ public class RecipeEdit implements Serializable {
     }
 
     public void init() throws IOException {
-        Optional<Recipe> recipe = service.find(id);
+        Optional<Recipe> recipe = service.findForCallerPrincipal(id);
         if (recipe.isPresent()) {
             this.recipe = factory.recipeToEditModel().apply(recipe.get());
             difficulties = Difficulty.values();

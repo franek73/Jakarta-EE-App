@@ -8,11 +8,11 @@
 <f:view>
     <h:head>
         <meta charset="UTF-8"/>
-        <meta name="description" content="Simple recipe's Jakarta EE app"/>
+        <meta name="description" content="Simple recipe Jakarta EE app"/>
         <meta name="keywords" content="Jakrata EE app"/>
         <meta name="author" content="Franciszek Gwarek"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Simple recipe's Jakarta EE app</title>
+        <title>Simple recipe Jakarta EE app</title>
 
         <h:outputStylesheet library="webjars" name="mdb-ui-kit/6.4.0/css/mdb.min.css"/>
         <h:outputStylesheet library="default" name="css/main.css"/>
@@ -25,6 +25,12 @@
             <header class="mb-4 mt-4">
                 <img src="#{resource['image/logo.png']}" alt="Logo" class="me-3" style="height:100px;"/>
                 <h1>Simple recipe's Jakarta EE app</h1>
+                <h:form styleClass="container d-flex  align-items-center justify-content-end"
+                        rendered="#{facesContext.externalContext.userPrincipal != null}">
+                    Logged: <h:outputText value="#{facesContext.externalContext.userPrincipal.name}"/>
+                    <h:commandButton styleClass="btn btn-link" value="Logout"
+                                     action="#{userLogout.logoutAction()}"/>
+                </h:form>
             </header>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -41,6 +47,12 @@
                             <h:link styleClass="nav-link"
                                     outcome="/recipe/recipe_list.xhtml">Recipes</h:link>
                         </li>
+                        <h:panelGroup rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                            <li class="nav-item">
+                                <h:link styleClass="nav-link"
+                                        outcome="/user/user_list.xhtml">Users</h:link>
+                            </li>
+                        </h:panelGroup>
                     </ul>
                 </div>
             </nav>

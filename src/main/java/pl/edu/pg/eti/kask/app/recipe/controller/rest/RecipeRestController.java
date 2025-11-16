@@ -1,11 +1,12 @@
 package pl.edu.pg.eti.kask.app.recipe.controller.rest;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.TransactionalException;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
@@ -21,12 +22,14 @@ import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
 import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.util.UUID;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
+
+import pl.edu.pg.eti.kask.app.user.entity.UserRole;
+
 import java.util.logging.Level;
 
 @Path("")
 @Log
+@RolesAllowed(UserRole.USER)
 public class RecipeRestController implements RecipeController {
 
     private RecipeService recipeService;
@@ -84,7 +87,7 @@ public class RecipeRestController implements RecipeController {
     public GetRecipeResponse getRecipe(UUID id, UUID categoryId) {
         if (categoryService.find(categoryId).isPresent()) {
             if (recipeService.find(id).isPresent()) {
-                var recipe = recipeService.find(id).map(factory.recipeToResponse()).get();
+                var recipe = recipeService.find(id).map(factory.recipeToResponse()).orElseThrow();
                 if (recipe.getCategory().getId().equals(categoryId)) {
                     return recipe;
                 }
@@ -116,7 +119,7 @@ public class RecipeRestController implements RecipeController {
                                 .toString());
 
                         throw new WebApplicationException(Response.Status.CREATED);
-                    } catch (TransactionalException ex) {
+                    } catch (EJBException ex) {
                         if (ex.getCause() instanceof IllegalArgumentException) {
                             log.log(Level.WARNING, ex.getMessage(), ex);
                             throw new BadRequestException(ex);
@@ -137,7 +140,12 @@ public class RecipeRestController implements RecipeController {
                 category -> recipeService.find(id).ifPresentOrElse(
                         recipe -> {
                             if (recipe.getCategory().getId().equals(categoryId)) {
-                                recipeService.update(factory.updateRecipe().apply(recipe, request));
+                                try {
+                                    recipeService.update(factory.updateRecipe().apply(recipe, request));
+                                } catch (EJBException ex) {
+                                    log.log(Level.WARNING, ex.getMessage(), ex);
+                                    throw new ForbiddenException(ex);
+                                }
                             } else {
                                 throw new NotFoundException();
                             }
@@ -155,7 +163,12 @@ public class RecipeRestController implements RecipeController {
                 category -> recipeService.find(id).ifPresentOrElse(
                         recipe -> {
                             if (recipe.getCategory().getId().equals(categoryId)) {
-                                recipeService.delete(id);
+                                try {
+                                    recipeService.delete(id);
+                                } catch (EJBException ex) {
+                                    log.log(Level.WARNING, ex.getMessage(), ex);
+                                    throw new ForbiddenException(ex);
+                                }
                             } else {
                                 throw new NotFoundException();
                             }
