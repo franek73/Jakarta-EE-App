@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -11,7 +12,7 @@ import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeEditModel;
-import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,9 +23,9 @@ import java.util.UUID;
 @Named
 public class RecipeEdit implements Serializable {
 
-    private final RecipeService service;
+    private RecipeService service;
 
-    private final ModelFunctionFactory factory;
+    private ModelFunctionFactory factory;
 
     @Getter
     private Difficulty[] difficulties;
@@ -37,9 +38,13 @@ public class RecipeEdit implements Serializable {
     private RecipeEditModel recipe;
 
     @Inject
-    public RecipeEdit(RecipeService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public RecipeEdit(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setService(RecipeService service) {
+        this.service = service;
     }
 
     public void init() throws IOException {

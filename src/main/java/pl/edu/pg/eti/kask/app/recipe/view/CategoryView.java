@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -11,8 +12,8 @@ import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.model.CategoryModel;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeModel;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
-import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,9 +26,9 @@ import java.util.stream.Collectors;
 @Named
 public class CategoryView implements Serializable {
 
-    private final RecipeService recipeService;
+    private RecipeService recipeService;
 
-    private final CategoryService categoryService;
+    private CategoryService categoryService;
 
     private final ModelFunctionFactory factory;
 
@@ -42,9 +43,17 @@ public class CategoryView implements Serializable {
     private CategoryModel category;
 
     @Inject
-    public CategoryView(CategoryService categoryService, RecipeService recipeService, ModelFunctionFactory factory) {
-        this.categoryService = categoryService;
+    public CategoryView(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @EJB
+    public void setRecipeService(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 

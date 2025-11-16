@@ -8,7 +8,7 @@ import jakarta.inject.Inject;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.model.CategoryModel;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
 
 import java.util.Optional;
 import java.util.UUID;

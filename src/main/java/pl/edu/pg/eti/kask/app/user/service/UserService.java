@@ -1,11 +1,11 @@
-package pl.edu.pg.eti.kask.app.user.service.implementation;
+package pl.edu.pg.eti.kask.app.user.service;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.repository.api.UserRepository;
-import pl.edu.pg.eti.kask.app.user.service.api.UserService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,14 +17,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
-public class UserServiceImpl implements UserService {
-    private final UserRepository repository;
+@LocalBean
+@Stateless
+@NoArgsConstructor(force = true)
+public class UserService {
+    private UserRepository repository;
 
     private final String avatarDir;
 
     @Inject
-    public UserServiceImpl(UserRepository repository) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
         this.avatarDir = "C:/temp/avatar";
 
@@ -38,40 +40,30 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
     public Optional<User> find(UUID id) {
         return repository.find(id);
     }
 
-    @Override
     public Optional<User> findByLogin(String login) {
         return repository.findByLogin(login);
     }
 
-    @Override
     public List<User> findAll() {
         return repository.findAll();
     }
 
-    @Override
-    @Transactional
     public void create(User entity) {
         repository.create(entity);
     }
 
-    @Override
-    @Transactional
     public void update(User entity) {
         repository.update(entity);
     }
 
-    @Override
-    @Transactional
     public void delete(UUID id) {
         repository.delete(id);
     }
 
-    @Override
     public Optional<byte[]> findAvatar(UUID id) {
         return repository.find(id)
                 .flatMap(user -> {
@@ -93,7 +85,6 @@ public class UserServiceImpl implements UserService {
                 });
     }
 
-    @Override
     public void updateAvatar(UUID id, InputStream is, String originalFilename) {
         repository.find(id).ifPresent(user -> {
             try {
@@ -112,7 +103,6 @@ public class UserServiceImpl implements UserService {
         });
     }
 
-    @Override
     public void createAvatar(UUID id, InputStream is, String originalFilename) {
         repository.find(id).ifPresent(user -> {
             try {
@@ -131,7 +121,6 @@ public class UserServiceImpl implements UserService {
         });
     }
 
-    @Override
     public void deleteAvatar(UUID id) {
         repository.find(id).ifPresent(user -> {
             try {

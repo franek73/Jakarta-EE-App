@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.controller.rest;
 
+import jakarta.ejb.EJB;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
@@ -12,16 +13,15 @@ import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.app.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.controller.api.CategoryController;
-import pl.edu.pg.eti.kask.app.recipe.controller.api.RecipeController;
 import pl.edu.pg.eti.kask.app.recipe.dto.*;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
 
 import java.util.UUID;
 
 @Path("")
 public class CategoryRestController implements CategoryController {
 
-    private final CategoryService service;
+    private CategoryService service;
 
     private final DtoFunctionFactory factory;
 
@@ -35,11 +35,15 @@ public class CategoryRestController implements CategoryController {
     }
 
     @Inject
-    public CategoryRestController(CategoryService service, DtoFunctionFactory factory,
+    public CategoryRestController(DtoFunctionFactory factory,
                                   @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setService(CategoryService service) {
+        this.service = service;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.controller.rest;
 
+import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.TransactionalException;
@@ -16,8 +17,8 @@ import pl.edu.pg.eti.kask.app.recipe.dto.GetRecipeResponse;
 import pl.edu.pg.eti.kask.app.recipe.dto.GetRecipesResponse;
 import pl.edu.pg.eti.kask.app.recipe.dto.PatchRecipeRequest;
 import pl.edu.pg.eti.kask.app.recipe.dto.PutRecipeRequest;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
-import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.util.UUID;
 import jakarta.ws.rs.BadRequestException;
@@ -28,9 +29,9 @@ import java.util.logging.Level;
 @Log
 public class RecipeRestController implements RecipeController {
 
-    private final RecipeService recipeService;
+    private RecipeService recipeService;
 
-    private final CategoryService categoryService;
+    private CategoryService categoryService;
 
     private final DtoFunctionFactory factory;
 
@@ -44,12 +45,19 @@ public class RecipeRestController implements RecipeController {
     }
 
     @Inject
-    public RecipeRestController(RecipeService recipeService, DtoFunctionFactory factory,
-                                CategoryService categoryService,
+    public RecipeRestController(DtoFunctionFactory factory,
                                 @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.recipeService = recipeService;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setRecipeService(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
+
+    @EJB
+    public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
@@ -92,7 +100,6 @@ public class RecipeRestController implements RecipeController {
             throw new NotFoundException();
         }
     }
-
 
     @Override
     @SneakyThrows

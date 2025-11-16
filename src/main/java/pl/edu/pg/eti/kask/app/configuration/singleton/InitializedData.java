@@ -1,53 +1,55 @@
-package pl.edu.pg.eti.kask.app.configuration.observer;
+package pl.edu.pg.eti.kask.app.configuration.singleton;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Initialized;
-import jakarta.enterprise.context.control.RequestContextController;
-import jakarta.enterprise.event.Observes;
-import jakarta.inject.Inject;
-import jakarta.servlet.ServletContextListener;
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.ejb.Singleton;
+import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
-import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 import pl.edu.pg.eti.kask.app.user.entity.Role;
 import pl.edu.pg.eti.kask.app.user.entity.User;
-import pl.edu.pg.eti.kask.app.user.service.api.UserService;
+import pl.edu.pg.eti.kask.app.user.service.UserService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 import lombok.SneakyThrows;
 
-@ApplicationScoped
-public class InitializedData implements ServletContextListener {
+@Singleton
+@Startup
+@TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
+@NoArgsConstructor
+public class InitializedData {
 
-    private final UserService userService;
+    private UserService userService;
 
-    private final CategoryService categoryService;
+    private CategoryService categoryService;
 
-    private final RecipeService recipeService;
+    private RecipeService recipeService;
 
-    private final RequestContextController requestContextController;
-
-    @Inject
-    public InitializedData(UserService userService, CategoryService categoryService, RecipeService recipeService,RequestContextController requestContextController) {
+    @EJB
+    public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @EJB
+    public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @EJB
+    public void setRecipeService(RecipeService recipeService) {
         this.recipeService = recipeService;
-        this.requestContextController = requestContextController;
     }
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        init();
-    }
-
+    @PostConstruct
     @SneakyThrows
     private void init() {
-        requestContextController.activate();
-
         if (userService.findByLogin("admin").isEmpty()) {
 
             User admin = User.builder()
@@ -133,8 +135,6 @@ public class InitializedData implements ServletContextListener {
             recipeService.create(omelet);
             recipeService.create(pizza);
         }
-
-        requestContextController.deactivate();
     }
 
 }
