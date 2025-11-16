@@ -24,15 +24,15 @@ public class InitializeAdminService {
 
     private final UserRepository userRepository;
 
-    //private final Pbkdf2PasswordHash passwordHash;
+    private final Pbkdf2PasswordHash passwordHash;
 
     @Inject
     public InitializeAdminService(
-            UserRepository userRepository/*,
-            @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash*/
+            UserRepository userRepository,
+            @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash
     ) {
         this.userRepository = userRepository;
-        //this.passwordHash = passwordHash;
+        this.passwordHash = passwordHash;
     }
 
     @PostConstruct
@@ -45,7 +45,7 @@ public class InitializeAdminService {
                     .login("admin-service")
                     .name("Admin")
                     .email("admin-service@gmail.com")
-                    .password("adminservice")
+                    .password(passwordHash.generate("adminservice".toCharArray()))
                     .registrationDate(LocalDate.now())
                     .role(UserRole.ADMIN)
                     .build();
@@ -53,6 +53,5 @@ public class InitializeAdminService {
             userRepository.create(admin);
         }
     }
-
 
 }

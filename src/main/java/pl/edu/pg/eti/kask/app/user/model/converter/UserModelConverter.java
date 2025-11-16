@@ -40,4 +40,3 @@ public class UserModelConverter implements Converter<UserModel> {
     }
 
 }
-

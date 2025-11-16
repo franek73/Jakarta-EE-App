@@ -6,6 +6,7 @@ import pl.edu.pg.eti.kask.app.user.model.function.UserToModelFunction;
 
 import java.io.Serializable;
 import java.util.function.Function;
+import pl.edu.pg.eti.kask.app.user.model.function.UserToModelFunction;
 
 public class RecipeToEditModelFunction implements Function<Recipe, RecipeEditModel>, Serializable {
 

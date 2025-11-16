@@ -10,8 +10,8 @@ import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 @DatabaseIdentityStoreDefinition(
         dataSourceLookup = "jdbc/JakartaAppRecipes",
         callerQuery = "select password from users where login = ?",
-        groupsQuery = "select role from users__roles where id = (select id from users where login = ?)"/*,
-        hashAlgorithm = Pbkdf2PasswordHash.class*/
+        groupsQuery = "select role from users where login = ?",
+        hashAlgorithm = Pbkdf2PasswordHash.class
 )
 public class AuthenticationConfig {
 }

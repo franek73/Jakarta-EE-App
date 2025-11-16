@@ -18,4 +18,3 @@ public class UserToModelFunction implements Function<User, UserModel>, Serializa
     }
 
 }
-

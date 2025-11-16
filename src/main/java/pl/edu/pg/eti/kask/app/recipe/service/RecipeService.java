@@ -6,7 +6,6 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.respository.api.CategoryRepository;
@@ -88,8 +87,8 @@ public class RecipeService {
     }
 
     @RolesAllowed(UserRole.USER)
-    public void update(Recipe recipe) {
-        recipeRepository.update(recipe);
+    public void update(Recipe entity) {
+        recipeRepository.update(entity);
     }
 
     @RolesAllowed(UserRole.USER)
@@ -101,7 +100,6 @@ public class RecipeService {
                 .orElseThrow(IllegalStateException::new);
         return findByIdAndUser(id, user);
     }
-
 
     @RolesAllowed(UserRole.USER)
     public List<Recipe> findAllForCallerPrincipal() {
@@ -133,5 +131,4 @@ public class RecipeService {
         }
         throw new EJBAccessException("Caller not authorized.");
     }
-
 }

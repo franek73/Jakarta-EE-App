@@ -21,4 +21,3 @@ public class UsersToModelFunction implements Function<List<User>, UsersModel> {
     }
 
 }
-

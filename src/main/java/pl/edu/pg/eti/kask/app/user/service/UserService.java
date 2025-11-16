@@ -6,7 +6,6 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.entity.UserRole;
@@ -26,18 +25,17 @@ import java.util.UUID;
 @Stateless
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 public class UserService {
-
     private final UserRepository repository;
 
-    //private final Pbkdf2PasswordHash passwordHash;
+    private final Pbkdf2PasswordHash passwordHash;
 
     private final String avatarDir;
 
     @Inject
-    public UserService(UserRepository repository/*,
-                       @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash*/) {
+    public UserService(UserRepository repository,
+                       @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash) {
         this.repository = repository;
-        //this.passwordHash = passwordHash;
+        this.passwordHash = passwordHash;
         this.avatarDir = "C:/temp/avatar";
 
         try {
@@ -67,7 +65,7 @@ public class UserService {
 
     @PermitAll
     public void create(User user) {
-        //user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
+        user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         repository.create(user);
     }
 
@@ -155,6 +153,13 @@ public class UserService {
                 throw new IllegalStateException(ex);
             }
         });
+    }
+
+    @PermitAll
+    public boolean verify(String login, String password) {
+        return findByLogin(login)
+                .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
+                .orElse(false);
     }
 
     private void deleteAvatarFile(String filename) throws IOException {

@@ -34,6 +34,7 @@ public class User implements Serializable {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
+    @Column(name = "role")
     private String role;
 
     @ToString.Exclude
