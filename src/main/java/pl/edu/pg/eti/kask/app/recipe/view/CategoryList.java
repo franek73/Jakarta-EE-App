@@ -8,6 +8,7 @@ import pl.edu.pg.eti.kask.app.recipe.model.CategoriesModel;
 import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @RequestScoped
 @Named
@@ -32,8 +33,8 @@ public class CategoryList implements Serializable {
         return categories;
     }
 
-    public String deleteAction(CategoriesModel.Category category) {
-        service.delete(category.getId());
+    public String deleteAction(UUID id) {
+        service.delete(id);
         return "category_list?faces-redirect=true";
     }
 

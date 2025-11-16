@@ -37,7 +37,10 @@ public class CategoryPersistenceRepository implements CategoryRepository {
 
     @Override
     public void delete(UUID id) {
-        em.remove(em.find(Category.class, id));
+        Category category = em.find(Category.class, id);
+        em.refresh(category);
+
+        em.remove(category);
     }
 
     @Override
