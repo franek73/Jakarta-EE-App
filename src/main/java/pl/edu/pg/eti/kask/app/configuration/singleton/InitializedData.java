@@ -1,18 +1,19 @@
 package pl.edu.pg.eti.kask.app.configuration.singleton;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.ejb.EJB;
-import jakarta.ejb.Startup;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
-import jakarta.ejb.Singleton;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RunAs;
+import jakarta.ejb.*;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
 import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
 import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
-import pl.edu.pg.eti.kask.app.user.entity.Role;
+import pl.edu.pg.eti.kask.app.user.entity.UserRole;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.service.UserService;
 
@@ -24,6 +25,10 @@ import lombok.SneakyThrows;
 @Startup
 @TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
 @NoArgsConstructor
+@DependsOn("InitializeAdminService")
+@DeclareRoles({UserRole.ADMIN, UserRole.USER})
+@RunAs(UserRole.ADMIN)
+@Log
 public class InitializedData {
 
     private UserService userService;
@@ -31,6 +36,9 @@ public class InitializedData {
     private CategoryService categoryService;
 
     private RecipeService recipeService;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @EJB
     public void setUserService(UserService userService) {
@@ -59,7 +67,7 @@ public class InitializedData {
                     .name("Admin")
                     .password("admin123")
                     .registrationDate(LocalDate.now())
-                    .role(Role.Admin)
+                    .role(UserRole.ADMIN)
                     .build();
 
             User franek = User.builder()
@@ -69,7 +77,7 @@ public class InitializedData {
                     .name("Franek")
                     .password("franek123")
                     .registrationDate(LocalDate.now())
-                    .role(Role.User)
+                    .role(UserRole.USER)
                     .build();
 
             User maciek = User.builder()
@@ -79,7 +87,7 @@ public class InitializedData {
                     .name("Maciek")
                     .password("maciek123")
                     .registrationDate(LocalDate.now())
-                    .role(Role.User)
+                    .role(UserRole.USER)
                     .build();
 
             userService.create(admin);

@@ -1,10 +1,15 @@
 package pl.edu.pg.eti.kask.app.user.service;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.app.user.entity.User;
+import pl.edu.pg.eti.kask.app.user.entity.UserRole;
 import pl.edu.pg.eti.kask.app.user.repository.api.UserRepository;
 
 import java.io.IOException;
@@ -19,15 +24,20 @@ import java.util.UUID;
 
 @LocalBean
 @Stateless
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 public class UserService {
-    private UserRepository repository;
+
+    private final UserRepository repository;
+
+    //private final Pbkdf2PasswordHash passwordHash;
 
     private final String avatarDir;
 
     @Inject
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository/*,
+                       @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash*/) {
         this.repository = repository;
+        //this.passwordHash = passwordHash;
         this.avatarDir = "C:/temp/avatar";
 
         try {
@@ -36,33 +46,47 @@ public class UserService {
                 Files.createDirectories(path);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Could not create a catalog for avatars images: " + avatarDir, e);
+            throw new RuntimeException("Could not create a catalog for avatar images: " + avatarDir, e);
         }
     }
 
+    @RolesAllowed(UserRole.ADMIN)
     public Optional<User> find(UUID id) {
         return repository.find(id);
     }
 
+    @RolesAllowed(UserRole.ADMIN)
     public Optional<User> findByLogin(String login) {
         return repository.findByLogin(login);
     }
 
+    @RolesAllowed(UserRole.ADMIN)
     public List<User> findAll() {
         return repository.findAll();
     }
 
-    public void create(User entity) {
-        repository.create(entity);
+    @PermitAll
+    public void create(User user) {
+        //user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
+        repository.create(user);
     }
 
-    public void update(User entity) {
-        repository.update(entity);
+    @RolesAllowed(UserRole.USER)
+    public void update(User user) {
+        repository.update(user);
     }
 
+    @RolesAllowed(UserRole.ADMIN)
     public void delete(UUID id) {
         repository.delete(id);
     }
+
+    @PermitAll
+    /*public boolean verify(String login, String password) {
+        return findByLogin(login)
+                .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
+                .orElse(false);
+    }*/
 
     public Optional<byte[]> findAvatar(UUID id) {
         return repository.find(id)

@@ -89,7 +89,7 @@ public class RecipeCreate implements Serializable {
     }
 
     public String saveAction() {
-        recipeService.create(factory.modelToRecipe().apply(recipe));
+        recipeService.createForCallerPrincipal(factory.modelToRecipe().apply(recipe));
         conversation.end();
         return "/recipe/recipe_list.xhtml?faces-redirect=true";
     }

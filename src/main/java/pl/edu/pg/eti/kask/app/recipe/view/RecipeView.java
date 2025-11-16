@@ -1,7 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
 import jakarta.ejb.EJB;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;

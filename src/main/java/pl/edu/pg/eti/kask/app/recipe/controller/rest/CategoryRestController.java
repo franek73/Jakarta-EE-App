@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.controller.rest;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
@@ -15,6 +16,7 @@ import pl.edu.pg.eti.kask.app.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.controller.api.CategoryController;
 import pl.edu.pg.eti.kask.app.recipe.dto.*;
 import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
+import pl.edu.pg.eti.kask.app.user.entity.UserRole;
 
 import java.util.UUID;
 
@@ -59,6 +61,7 @@ public class CategoryRestController implements CategoryController {
     }
 
     @Override
+    @RolesAllowed(UserRole.ADMIN)
     public void deleteCategory(UUID id) {
         service.find(id).ifPresentOrElse(
                 entity -> service.delete(id),

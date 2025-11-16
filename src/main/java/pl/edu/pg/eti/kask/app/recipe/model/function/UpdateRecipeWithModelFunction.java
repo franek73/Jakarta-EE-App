@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.app.recipe.model.function;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeEditModel;
+import pl.edu.pg.eti.kask.app.user.entity.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,6 +21,9 @@ public class UpdateRecipeWithModelFunction implements BiFunction<Recipe, RecipeE
                 .creationDate(LocalDate.now())
                 .difficulty(model.getDifficulty())
                 .category(entity.getCategory())
+                .author(User.builder()
+                        .id(model.getAuthor().getId())
+                        .build())
                 .build();
     }
 }

@@ -32,7 +32,7 @@ public class RecipeList implements Serializable {
 
     public RecipesModel getRecipes() {
         if (recipes == null) {
-            recipes = factory.recipesToModel().apply(service.findAll());
+            recipes = factory.recipesToModel().apply(service.findAllForCallerPrincipal());
         }
         return recipes;
     }
