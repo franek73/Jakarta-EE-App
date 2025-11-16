@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @LocalBean
 @Stateless
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 public class UserService {
     private final UserRepository repository;
 
@@ -78,6 +78,13 @@ public class UserService {
     public void delete(UUID id) {
         repository.delete(id);
     }
+
+    @PermitAll
+    /*public boolean verify(String login, String password) {
+        return findByLogin(login)
+                .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
+                .orElse(false);
+    }*/
 
     public Optional<byte[]> findAvatar(UUID id) {
         return repository.find(id)

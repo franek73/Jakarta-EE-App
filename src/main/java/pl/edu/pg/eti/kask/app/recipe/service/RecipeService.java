@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @LocalBean
 @Stateless
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;

@@ -5,6 +5,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @LocalBean
 @Stateless
 @Log
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 public class CategoryService {
 
     private final CategoryRepository repository;

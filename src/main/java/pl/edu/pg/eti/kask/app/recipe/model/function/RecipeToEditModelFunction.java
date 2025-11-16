@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.app.recipe.model.function;
 
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeEditModel;
+import pl.edu.pg.eti.kask.app.user.model.function.UserToModelFunction;
 
 import java.io.Serializable;
 import java.util.function.Function;
