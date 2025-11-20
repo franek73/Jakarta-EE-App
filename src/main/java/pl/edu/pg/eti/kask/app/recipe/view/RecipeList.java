@@ -38,7 +38,7 @@ public class RecipeList implements Serializable {
     }
 
     public String deleteAction(RecipesModel.Recipe recipe) {
-        service.delete(recipe.getId());
+        service.deleteForCallerPrincipal(recipe.getId());
         return "/recipe/recipe_list?faces-redirect=true";
     }
 

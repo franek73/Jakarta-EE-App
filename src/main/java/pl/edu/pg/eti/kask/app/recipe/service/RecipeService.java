@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @LocalBean
 @Stateless
-@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
+@NoArgsConstructor(force = true)
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
@@ -42,34 +42,34 @@ public class RecipeService {
         this.securityContext = securityContext;
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed(UserRole.ADMIN)
     public Optional<List<Recipe>> findAllByCategory(UUID id) {
         return categoryRepository.find(id)
                 .map(recipeRepository::findAllByCategory);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public Optional<List<Recipe>> findAllByUser(UUID id) {
         return userRepository.find(id)
                 .map(recipeRepository::findAllByUser);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public Optional<Recipe> findByIdAndUser(UUID id, User user) {
         return recipeRepository.findByIdAndUser(id, user);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed(UserRole.ADMIN)
     public Optional<Recipe> find(UUID id) {
         return recipeRepository.find(id);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed(UserRole.ADMIN)
     public List<Recipe> findAll() {
         return recipeRepository.findAll();
     }
 
-    @RolesAllowed(UserRole.ADMIN)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public void create(Recipe recipe) {
         if (recipeRepository.find(recipe.getId()).isPresent()) {
             throw new IllegalArgumentException("Recipe already exists.");
@@ -81,17 +81,17 @@ public class RecipeService {
         recipeRepository.create(recipe);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public void delete(UUID id) {
         recipeRepository.delete(id);
     }
 
-    @RolesAllowed(UserRole.USER)
-    public void update(Recipe entity) {
-        recipeRepository.update(entity);
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    public void update(Recipe recipe) {
+        recipeRepository.update(recipe);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public Optional<Recipe> findForCallerPrincipal(UUID id) {
         if (securityContext.isCallerInRole(UserRole.ADMIN)) {
             return find(id);
@@ -101,7 +101,7 @@ public class RecipeService {
         return findByIdAndUser(id, user);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public List<Recipe> findAllForCallerPrincipal() {
         if (securityContext.isCallerInRole(UserRole.ADMIN)) {
             return findAll();
@@ -111,13 +111,39 @@ public class RecipeService {
         return findAllByUser(user.getId()).orElseThrow();
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public void createForCallerPrincipal(Recipe recipe) {
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
                 .orElseThrow(IllegalStateException::new);
 
         recipe.setAuthor(user);
         create(recipe);
+    }
+
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    public void updateForCallerPrincipal(Recipe recipe) {
+        if (securityContext.isCallerInRole(UserRole.ADMIN)) {
+            update(recipe);
+        }
+
+        User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
+                .orElseThrow(IllegalStateException::new);
+
+        findByIdAndUser(recipe.getId(), user).orElseThrow(IllegalStateException::new);
+        update(recipe);
+    }
+
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    public void deleteForCallerPrincipal(UUID id) {
+        if (securityContext.isCallerInRole(UserRole.ADMIN)) {
+            delete(id);
+        }
+
+        User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
+                .orElseThrow(IllegalStateException::new);
+
+        findByIdAndUser(id, user).orElseThrow(IllegalStateException::new);
+        delete(id);
     }
 
     private void checkAdminRoleOrOwner(Optional<Recipe> recipe) throws EJBAccessException {

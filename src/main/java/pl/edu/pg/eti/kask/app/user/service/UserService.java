@@ -5,6 +5,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.app.user.entity.User;
@@ -23,7 +24,7 @@ import java.util.UUID;
 
 @LocalBean
 @Stateless
-@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
+@NoArgsConstructor(force = true)
 public class UserService {
     private final UserRepository repository;
 
@@ -31,11 +32,15 @@ public class UserService {
 
     private final String avatarDir;
 
+    private final SecurityContext securityContext;
+
     @Inject
     public UserService(UserRepository repository,
-                       @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash) {
+                       @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash,
+                       @SuppressWarnings("CdiInjectionPointsInspection") SecurityContext securityContext) {
         this.repository = repository;
         this.passwordHash = passwordHash;
+        this.securityContext = securityContext;
         this.avatarDir = "C:/temp/avatar";
 
         try {
@@ -69,7 +74,7 @@ public class UserService {
         repository.create(user);
     }
 
-    @RolesAllowed(UserRole.USER)
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public void update(User user) {
         repository.update(user);
     }
@@ -78,13 +83,6 @@ public class UserService {
     public void delete(UUID id) {
         repository.delete(id);
     }
-
-    @PermitAll
-    /*public boolean verify(String login, String password) {
-        return findByLogin(login)
-                .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
-                .orElse(false);
-    }*/
 
     public Optional<byte[]> findAvatar(UUID id) {
         return repository.find(id)

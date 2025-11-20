@@ -1,45 +1,54 @@
 # Get all users.
 
 GET http://localhost:9080/jakarta-ee-project/api/users
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 
 ###
 
 # Get single user.
 
-GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+GET http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 
 ###
 
 # Delete single user.
 
-DELETE http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+DELETE http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 
 ###
 
 # Put single user.
 
-PUT http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+PUT http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
 Content-Type: application/json
 
 {
-  "login": "franek73",
-  "name": "Franek",
-  "email" : "franek@gmail.com",
-  "password": "franek123"
+  "login": "maniek",
+  "name": "Maciek",
+  "email" : "maciek@gmail.com",
+  "password": "maciek123"
 }
 
 ###
 
 # Patch single user.
 
-PATCH http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e
+PATCH http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 Content-Type: application/json
 
 {
-  "login": "franek",
-  "name": "Franek",
-  "email" : "franek73@gmail.com"
+  "login": "maciek11111",
+  "name": "Maciek1111",
+  "email" : "maciek1111@gmail.com"
 }
+
 
 ###
 
@@ -84,24 +93,29 @@ DELETE http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53
 # Get all categories.
 
 GET http://localhost:9080/jakarta-ee-project/api/categories
-
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Get single category.
 
 GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
-
+#Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Delete single category.
 
 DELETE http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
-
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Put single category.
 
 PUT http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 Content-Type: application/json
 
 {
@@ -114,6 +128,8 @@ Content-Type: application/json
 # Patch single category.
 
 PATCH http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 Content-Type: application/json
 
 {
@@ -126,55 +142,64 @@ Content-Type: application/json
 # Get all recipes.
 
 GET http://localhost:9080/jakarta-ee-project/api/recipes
-
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Get single recipe.
 
-GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
-
+GET http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
+#Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Delete single recipe.
 
-DELETE http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
-
+DELETE http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
+#Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Put single recipe.
 
-PUT http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+PUT http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
+#Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 Content-Type: application/json
 
 {
-  "name": "Porridge",
-  "description": "Porridge",
-  "difficulty" : "Easy"
+  "name": "Spaghetti",
+  "description": "Spaghetti",
+  "difficulty" : "Medium"
 }
 
 ###
 
 # Patch single recipe.
 
-PATCH http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+PATCH http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
+#Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 Content-Type: application/json
 
 {
-  "name": "Porridge with raspberries",
-  "description": "Porridge with raspberries",
-  "difficulty" : "Medium"
+  "name": "Spaghetti carbonara",
+  "description": "Spaghetti carbonara",
+  "difficulty" : "Hard"
 }
 
 ###
 
 # Get all category's recipes.
 
-GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76/recipes
-
+GET http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Get all user's recipes.
 
-GET http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197/recipes
-
+GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/recipes
+Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
+#Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###

@@ -72,7 +72,7 @@ public class CategoryView implements Serializable {
     }
 
     public String deleteRecipeAction(RecipeModel recipe) {
-        recipeService.delete(recipe.getId());
+        recipeService.deleteForCallerPrincipal(recipe.getId());
         return "category_view?faces-redirect=true&amp;id=" + id;
     }
 

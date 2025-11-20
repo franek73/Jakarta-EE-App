@@ -136,12 +136,23 @@ public class InitializedData {
                     .difficulty(Difficulty.Medium)
                     .creationDate(LocalDate.now())
                     .category(diner)
-                    .author(maciek)
+                    .author(franek)
+                    .build();
+
+            Recipe spaghetti = Recipe.builder()
+                    .id(UUID.fromString("e08ef7e3-7f2a-4378-b1fb-2922d730c70d"))
+                    .name("Spaghetti")
+                    .description("Spaghetti")
+                    .difficulty(Difficulty.Medium)
+                    .creationDate(LocalDate.now())
+                    .category(diner)
+                    .author(franek)
                     .build();
 
             recipeService.create(porridge);
             recipeService.create(omelet);
             recipeService.create(pizza);
+            recipeService.create(spaghetti);
         }
     }
 

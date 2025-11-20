@@ -61,6 +61,13 @@
                             </f:facet>
                         </h:dataTable>
 
+                        <h:column>
+                            <f:facet name="header">Edit category</f:facet>
+                            <h:link outcome="/category/category_edit.xhtml" value="Edit category">
+                                <f:param name="id" value="#{categoryView.category.id}"/>
+                            </h:link>
+                        </h:column>
+
                     </div>
                 </div>
             </div>

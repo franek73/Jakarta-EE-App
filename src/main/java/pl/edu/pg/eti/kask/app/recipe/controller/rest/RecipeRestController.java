@@ -5,7 +5,6 @@ import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
@@ -29,7 +28,7 @@ import java.util.logging.Level;
 
 @Path("")
 @Log
-@RolesAllowed(UserRole.USER)
+@RolesAllowed({UserRole.USER, UserRole.ADMIN})
 public class RecipeRestController implements RecipeController {
 
     private RecipeService recipeService;
@@ -66,7 +65,7 @@ public class RecipeRestController implements RecipeController {
 
     @Override
     public GetRecipesResponse getRecipes() {
-        return factory.recipesToResponse().apply(recipeService.findAll());
+        return factory.recipesToResponse().apply(recipeService.findAllForCallerPrincipal());
     }
 
     @Override
@@ -77,6 +76,7 @@ public class RecipeRestController implements RecipeController {
     }
 
     @Override
+    @RolesAllowed(UserRole.ADMIN)
     public GetRecipesResponse getUserRecipes(UUID id) {
         return recipeService.findAllByUser(id)
                 .map(factory.recipesToResponse())
@@ -86,8 +86,8 @@ public class RecipeRestController implements RecipeController {
     @Override
     public GetRecipeResponse getRecipe(UUID id, UUID categoryId) {
         if (categoryService.find(categoryId).isPresent()) {
-            if (recipeService.find(id).isPresent()) {
-                var recipe = recipeService.find(id).map(factory.recipeToResponse()).orElseThrow();
+            if (recipeService.findForCallerPrincipal(id).isPresent()) {
+                var recipe = recipeService.findForCallerPrincipal(id).map(factory.recipeToResponse()).orElseThrow();
                 if (recipe.getCategory().getId().equals(categoryId)) {
                     return recipe;
                 }
@@ -111,7 +111,7 @@ public class RecipeRestController implements RecipeController {
                 category -> {
                     try {
                         request.setCategory(categoryId);
-                        recipeService.create(factory.requestToRecipe().apply(id, request));
+                        recipeService.createForCallerPrincipal(factory.requestToRecipe().apply(id, request));
 
                         response.setHeader("Location", uriInfo.getBaseUriBuilder()
                                 .path(RecipeController.class, "getRecipe")
@@ -137,11 +137,11 @@ public class RecipeRestController implements RecipeController {
     @Override
     public void patchRecipe(UUID id, UUID categoryId, PatchRecipeRequest request) {
         categoryService.find(categoryId).ifPresentOrElse(
-                category -> recipeService.find(id).ifPresentOrElse(
+                category -> recipeService.findForCallerPrincipal(id).ifPresentOrElse(
                         recipe -> {
                             if (recipe.getCategory().getId().equals(categoryId)) {
                                 try {
-                                    recipeService.update(factory.updateRecipe().apply(recipe, request));
+                                    recipeService.updateForCallerPrincipal(factory.updateRecipe().apply(recipe, request));
                                 } catch (EJBException ex) {
                                     log.log(Level.WARNING, ex.getMessage(), ex);
                                     throw new ForbiddenException(ex);
@@ -160,11 +160,11 @@ public class RecipeRestController implements RecipeController {
     @Override
     public void deleteRecipe(UUID id, UUID categoryId) {
         categoryService.find(categoryId).ifPresentOrElse(
-                category -> recipeService.find(id).ifPresentOrElse(
+                category -> recipeService.findForCallerPrincipal(id).ifPresentOrElse(
                         recipe -> {
                             if (recipe.getCategory().getId().equals(categoryId)) {
                                 try {
-                                    recipeService.delete(id);
+                                    recipeService.deleteForCallerPrincipal(id);
                                 } catch (EJBException ex) {
                                     log.log(Level.WARNING, ex.getMessage(), ex);
                                     throw new ForbiddenException(ex);

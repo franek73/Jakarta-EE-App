@@ -44,4 +44,15 @@ public class ModelFunctionFactory {
         return new UsersToModelFunction();
     }
 
+    public ModelToCategoryFunction modelToCategory() {
+        return new ModelToCategoryFunction();
+    }
+
+    public CategoryToEditModelFunction categoryToEditModel() {
+        return new CategoryToEditModelFunction();
+    }
+
+    public UpdateCategoryWithModelFunction updateCategory() {
+        return new UpdateCategoryWithModelFunction();
+    }
 }

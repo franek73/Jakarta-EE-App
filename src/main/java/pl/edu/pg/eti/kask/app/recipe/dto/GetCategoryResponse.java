@@ -1,20 +1,26 @@
 package pl.edu.pg.eti.kask.app.recipe.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
-import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
+import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class GetCategoryResponse {
 
-    @Data
+    @Getter
+    @Setter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class Recipe {
 
         private UUID id;

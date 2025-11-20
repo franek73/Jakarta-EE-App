@@ -9,9 +9,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
+import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
+import pl.edu.pg.eti.kask.app.recipe.model.CategoryEditModel;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeEditModel;
+import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
 import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.IOException;
@@ -21,44 +24,40 @@ import java.util.UUID;
 
 @ViewScoped
 @Named
-public class RecipeEdit implements Serializable {
+public class CategoryEdit implements Serializable {
 
-    private RecipeService service;
+    private CategoryService service;
 
     private ModelFunctionFactory factory;
-
-    @Getter
-    private Difficulty[] difficulties;
 
     @Setter
     @Getter
     private UUID id;
 
     @Getter
-    private RecipeEditModel recipe;
+    private CategoryEditModel category;
 
     @Inject
-    public RecipeEdit(ModelFunctionFactory factory) {
+    public CategoryEdit(ModelFunctionFactory factory) {
         this.factory = factory;
     }
 
     @EJB
-    public void setService(RecipeService service) {
+    public void setService(CategoryService service) {
         this.service = service;
     }
 
     public void init() throws IOException {
-        Optional<Recipe> recipe = service.findForCallerPrincipal(id);
-        if (recipe.isPresent()) {
-            this.recipe = factory.recipeToEditModel().apply(recipe.get());
-            difficulties = Difficulty.values();
+        Optional<Category> category = service.find(id);
+        if (category.isPresent()) {
+            this.category = factory.categoryToEditModel().apply(category.get());
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Recipe not found");
         }
     }
 
     public String saveAction() {
-        service.updateForCallerPrincipal(factory.updateRecipe().apply(service.find(id).orElseThrow(), recipe));
+        service.update(factory.updateCategory().apply(service.find(id).orElseThrow(), category));
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
         return viewId + "?faces-redirect=true&includeViewParams=true";
     }

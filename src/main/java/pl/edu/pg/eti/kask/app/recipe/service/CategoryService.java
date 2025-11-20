@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.recipe.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.respository.api.CategoryRepository;
+import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.entity.UserRole;
 
 import java.util.List;
@@ -29,13 +30,13 @@ public class CategoryService {
         this.repository = categoryRepository;
     }
 
-    @PermitAll
+    @RolesAllowed({UserRole.ADMIN, UserRole.USER})
     public Optional<Category> find(UUID id) {
         Optional<Category> category = repository.find(id);
         return category;
     }
 
-    @PermitAll
+    @RolesAllowed({UserRole.ADMIN, UserRole.USER})
     public List<Category> findAll() {
         return repository.findAll();
     }

@@ -1,8 +1,8 @@
 package pl.edu.pg.eti.kask.app.recipe.model;
 
 import lombok.*;
-import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
-import pl.edu.pg.eti.kask.app.user.model.UserModel;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,13 +11,11 @@ import pl.edu.pg.eti.kask.app.user.model.UserModel;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class RecipeEditModel {
+public class CategoryCreateModel {
+
+    private UUID id;
 
     private String name;
 
     private String description;
-
-    private Difficulty difficulty;
-
-    private UserModel author;
 }
