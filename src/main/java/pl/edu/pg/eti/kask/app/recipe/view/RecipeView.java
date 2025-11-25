@@ -44,7 +44,7 @@ public class RecipeView implements Serializable {
     }
 
     public void init() throws IOException {
-        Optional<Recipe> recipe = service.find(id);
+        Optional<Recipe> recipe = service.findForCallerPrincipal(id);
         if (recipe.isPresent()) {
             this.recipe = factory.recipeToModel().apply(recipe.get());
         } else {

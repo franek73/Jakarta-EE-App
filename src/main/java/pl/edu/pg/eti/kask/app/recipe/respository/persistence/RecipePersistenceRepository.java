@@ -4,7 +4,7 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-import pl.edu.pg.eti.kask.app.recipe.entity.Category;
+import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.respository.api.RecipeRepository;
 import pl.edu.pg.eti.kask.app.user.entity.User;
@@ -33,6 +33,14 @@ public class RecipePersistenceRepository implements RecipeRepository {
         } catch (NoResultException ex) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Recipe> findAllByCategoryAndUser(Category category, User user) {
+        return em.createQuery("select r from Recipe r where r.category = :category and r.author = :author", Recipe.class)
+                .setParameter("category", category)
+                .setParameter("author", user)
+                .getResultList();
     }
 
     @Override

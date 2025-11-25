@@ -11,8 +11,9 @@
     </f:metadata>
 
     <ui:define name="content">
+        <f:loadBundle var="msg" basename="pl.edu.pg.eti.kask.app.entities.view.i18n.messages"/>
         <article>
-            <header><h2>Edit recipe info</h2></header>
+            <header><h2>#{msg.recipe_edition}</h2></header>
             <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-4 p-2">
@@ -27,7 +28,7 @@
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="description" value="#{recipeEdit.recipe.description}" styleClass="form-control"/>
-                            <h:outputLabel for="description" value="Description:" styleClass="form-label"/>
+                            <h:outputLabel for="description" value="#{msg.description}:" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -35,7 +36,7 @@
                 <div class="row">
                     <div class="col-4 p-2">
                         <fieldset>
-                            <legend class="form-label fs-6">Difficulty:</legend>
+                            <legend class="form-label fs-6">#{msg.difficulty}:</legend>
                             <ui:repeat value="#{recipeEdit.difficulties}" var="difficulty">
                                 <div class="form-check">
                                     <h:selectOneRadio id="radioId" group="difficulty"
@@ -52,11 +53,11 @@
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-primary" value="Update"
+                        <h:commandButton styleClass="btn btn-primary" value="#{msg.update}"
                                          action="#{recipeEdit.saveAction()}"/>
                     </div>
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-secondary" type="reset" value="Reset"/>
+                        <h:commandButton styleClass="btn btn-secondary" type="reset" value="#{msg.reset}"/>
                     </div>
                 </div>
             </h:form>

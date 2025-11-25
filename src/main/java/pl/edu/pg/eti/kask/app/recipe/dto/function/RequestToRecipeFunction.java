@@ -1,7 +1,7 @@
 package pl.edu.pg.eti.kask.app.recipe.dto.function;
 
 import pl.edu.pg.eti.kask.app.recipe.dto.PutRecipeRequest;
-import pl.edu.pg.eti.kask.app.recipe.entity.Category;
+import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 

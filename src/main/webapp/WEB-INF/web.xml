@@ -29,6 +29,16 @@
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>category</web-resource-name>
+            <url-pattern>/category/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 
     <security-constraint>
         <web-resource-collection>
@@ -59,5 +69,19 @@
         <role-name>user</role-name>
     </security-role>
 
+    <error-page>
+        <error-code>401</error-code>
+        <location>/error/401.xhtml</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error/403.xhtml</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.xhtml</location>
+    </error-page>
 </web-app>
 

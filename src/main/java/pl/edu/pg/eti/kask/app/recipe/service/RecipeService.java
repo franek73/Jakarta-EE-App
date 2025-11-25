@@ -7,8 +7,10 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
 import lombok.NoArgsConstructor;
+import pl.edu.pg.eti.kask.app.authorization.interceptor.binding.LogOperation;
+import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
-import pl.edu.pg.eti.kask.app.recipe.respository.api.CategoryRepository;
+import pl.edu.pg.eti.kask.app.category.repository.api.CategoryRepository;
 import pl.edu.pg.eti.kask.app.recipe.respository.api.RecipeRepository;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 import pl.edu.pg.eti.kask.app.user.entity.UserRole;
@@ -49,6 +51,18 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    public Optional<List<Recipe>> findAllByCategoryAndUser(UUID categoryId, UUID userId) {
+        Category category = categoryRepository.find(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        User user = userRepository.find(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Recipe> recipes = recipeRepository.findAllByCategoryAndUser(category, user);
+
+        return recipes.isEmpty() ? Optional.empty() : Optional.of(recipes);
+    }
+
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
     public Optional<List<Recipe>> findAllByUser(UUID id) {
         return userRepository.find(id)
                 .map(recipeRepository::findAllByUser);
@@ -70,6 +84,7 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    @LogOperation("CREATE_RECIPE")
     public void create(Recipe recipe) {
         if (recipeRepository.find(recipe.getId()).isPresent()) {
             throw new IllegalArgumentException("Recipe already exists.");
@@ -82,11 +97,13 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    @LogOperation("DELETE_RECIPE")
     public void delete(UUID id) {
         recipeRepository.delete(id);
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    @LogOperation("UPDATE_RECIPE")
     public void update(Recipe recipe) {
         recipeRepository.update(recipe);
     }
@@ -108,7 +125,17 @@ public class RecipeService {
         }
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
                 .orElseThrow(IllegalStateException::new);
-        return findAllByUser(user.getId()).orElseThrow();
+        return findAllByUser(user.getId()).orElseGet(List::of);
+    }
+
+    @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    public List<Recipe> findAllForCallerPrincipalByCategory(UUID id) {
+        if (securityContext.isCallerInRole(UserRole.ADMIN)) {
+            return findAllByCategory(id).orElseGet(List::of);
+        }
+        User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
+                .orElseThrow(IllegalStateException::new);
+        return findAllByCategoryAndUser(id, user.getId()).orElseGet(List::of);
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
@@ -129,7 +156,7 @@ public class RecipeService {
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
                 .orElseThrow(IllegalStateException::new);
 
-        findByIdAndUser(recipe.getId(), user).orElseThrow(IllegalStateException::new);
+        findByIdAndUser(recipe.getId(), user).orElseThrow();
         update(recipe);
     }
 
@@ -142,7 +169,7 @@ public class RecipeService {
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
                 .orElseThrow(IllegalStateException::new);
 
-        findByIdAndUser(id, user).orElseThrow(IllegalStateException::new);
+        findByIdAndUser(id, user).orElseThrow();
         delete(id);
     }
 

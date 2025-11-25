@@ -1,6 +1,8 @@
 package pl.edu.pg.eti.kask.app.component;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import pl.edu.pg.eti.kask.app.category.model.function.CategoryToEditModelFunction;
+import pl.edu.pg.eti.kask.app.category.model.function.*;
 import pl.edu.pg.eti.kask.app.recipe.model.function.*;
 import pl.edu.pg.eti.kask.app.user.model.function.UserToModelFunction;
 import pl.edu.pg.eti.kask.app.user.model.function.UsersToModelFunction;

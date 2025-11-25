@@ -7,6 +7,7 @@ import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 
 @Getter

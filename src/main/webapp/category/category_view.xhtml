@@ -11,6 +11,7 @@
     </f:metadata>
 
     <ui:define name="content">
+        <f:loadBundle var="msg" basename="pl.edu.pg.eti.kask.app.entities.view.i18n.messages"/>
         <article>
             <header><h2><h:outputText value="#{categoryView.category.name}"/></h2></header>
             <div class="container">
@@ -18,7 +19,7 @@
                     <div class="col-4">
                         <div class="row mb-2">
                             <div class="col-6">
-                                Description
+                                #{msg.description}
                             </div>
                             <div class="col-6">
                                 <h:outputText value="#{categoryView.category.description}"/>
@@ -26,10 +27,10 @@
                         </div>
 
                         <div class="col-6">
-                            Recipes:
+                            #{msg.recipes}
                         </div>
 
-                        <h:dataTable value="#{categoryView.recipes}" var="recipe"
+                        <h:dataTable id="recipeTable" value="#{categoryView.recipes}" var="recipe"
                                      styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
                             <h:column>
@@ -37,36 +38,31 @@
                             </h:column>
 
                             <h:column>
-                                <h:link outcome="/recipe/recipe_view.xhtml" value="View">
+                                <h:link outcome="/recipe/recipe_view.xhtml" value="#{msg.view}">
                                     <f:param name="id" value="#{recipe.id}"/>
                                 </h:link>
                             </h:column>
 
                             <h:column>
-                                <h:link outcome="/recipe/recipe_edit.xhtml" value="Edit">
+                                <h:link outcome="/recipe/recipe_edit.xhtml" value="#{msg.edit}">
                                     <f:param name="id" value="#{recipe.id}"/>
                                 </h:link>
                             </h:column>
 
                             <h:column>
                                 <h:form>
-                                    <h:commandButton styleClass="btn" value="Delete"
-                                                     action="#{categoryView.deleteRecipeAction(recipe)}"/>
+                                    <h:commandButton styleClass="btn" value="#{msg.delete}"
+                                                     action="#{categoryView.deleteRecipeAction(recipe)}">
+                                        <f:ajax execute="@this" render=":recipeTable"/>
+                                    </h:commandButton>
                                 </h:form>
                             </h:column>
 
                             <f:facet name="footer">
                                 <h:button styleClass="btn" outcome="/recipe/recipe_create__basic.xhtml"
-                                          value="Create new recipe"/>
+                                          value="#{msg.create_new_recipe}"/>
                             </f:facet>
                         </h:dataTable>
-
-                        <h:column>
-                            <f:facet name="header">Edit category</f:facet>
-                            <h:link outcome="/category/category_edit.xhtml" value="Edit category">
-                                <f:param name="id" value="#{categoryView.category.id}"/>
-                            </h:link>
-                        </h:column>
 
                     </div>
                 </div>

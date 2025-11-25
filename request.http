@@ -1,5 +1,5 @@
 # Get all users.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/users
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -7,7 +7,7 @@ Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 ###
 
 # Get single user.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -15,7 +15,7 @@ Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 ###
 
 # Delete single user.
-
+// @no-cookie-jar
 DELETE http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -23,7 +23,7 @@ Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 ###
 
 # Put single user.
-
+// @no-cookie-jar
 PUT http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
 Content-Type: application/json
 
@@ -37,7 +37,7 @@ Content-Type: application/json
 ###
 
 # Patch single user.
-
+// @no-cookie-jar
 PATCH http://localhost:9080/jakarta-ee-project/api/users/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -53,7 +53,7 @@ Content-Type: application/json
 ###
 
 # Create user avatar.
-
+// @no-cookie-jar
 PUT http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
 Content-Type: multipart/form-data; boundary=boundary
 
@@ -66,7 +66,7 @@ Content-Disposition: form-data; name="avatar"; filename="avatar1.png"
 ###
 
 # Patch user avatar.
-
+// @no-cookie-jar
 PATCH http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
 Content-Type: multipart/form-data; boundary=boundary
 
@@ -79,40 +79,40 @@ Content-Disposition: form-data; name="avatar"; filename="avatar2.png"
 ###
 
 # Get single user avatar.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
 
 ###
 
 # Delete single user avatar.
-
+// @no-cookie-jar
 DELETE http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/avatar
 
 ###
 
 # Get all categories.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/categories
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Get single category.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
 #Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Delete single category.
-
+// @no-cookie-jar
 DELETE http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Put single category.
-
+// @no-cookie-jar
 PUT http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -126,7 +126,7 @@ Content-Type: application/json
 ###
 
 # Patch single category.
-
+// @no-cookie-jar
 PATCH http://localhost:9080/jakarta-ee-project/api/categories/f5875513-bf7b-4ae1-b8a5-5b70a1b90e76
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -140,28 +140,28 @@ Content-Type: application/json
 ###
 
 # Get all recipes.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/recipes
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Get single recipe.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
 #Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Delete single recipe.
-
+// @no-cookie-jar
 DELETE http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
 #Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Put single recipe.
-
+// @no-cookie-jar
 PUT http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
 #Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -176,7 +176,7 @@ Content-Type: application/json
 ###
 
 # Patch single recipe.
-
+// @no-cookie-jar
 PATCH http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes/e08ef7e3-7f2a-4378-b1fb-2922d730c70d
 #Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
@@ -191,14 +191,14 @@ Content-Type: application/json
 ###
 
 # Get all category's recipes.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/categories/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/recipes
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User
 ###
 
 # Get all user's recipes.
-
+// @no-cookie-jar
 GET http://localhost:9080/jakarta-ee-project/api/users/81e1c2a9-7f57-439b-b53d-6db88b071e4e/recipes
 Authorization: Basic YWRtaW46YWRtaW4xMjM= #Admin
 #Authorization: Basic ZnJhbmVrNzM6ZnJhbmVrMTIz #User

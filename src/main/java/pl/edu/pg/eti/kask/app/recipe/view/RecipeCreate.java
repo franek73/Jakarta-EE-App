@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
-import pl.edu.pg.eti.kask.app.recipe.model.CategoryModel;
+import pl.edu.pg.eti.kask.app.category.model.CategoryModel;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeCreateModel;
-import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
+import pl.edu.pg.eti.kask.app.category.service.CategoryService;
 import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.Serializable;

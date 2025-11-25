@@ -1,6 +1,7 @@
 package pl.edu.pg.eti.kask.app.recipe.model;
 
 import lombok.*;
+import pl.edu.pg.eti.kask.app.category.model.CategoryModel;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
 
 import java.util.UUID;

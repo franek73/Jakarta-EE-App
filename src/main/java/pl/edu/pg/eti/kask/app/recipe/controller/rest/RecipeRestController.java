@@ -17,7 +17,7 @@ import pl.edu.pg.eti.kask.app.recipe.dto.GetRecipeResponse;
 import pl.edu.pg.eti.kask.app.recipe.dto.GetRecipesResponse;
 import pl.edu.pg.eti.kask.app.recipe.dto.PatchRecipeRequest;
 import pl.edu.pg.eti.kask.app.recipe.dto.PutRecipeRequest;
-import pl.edu.pg.eti.kask.app.recipe.service.CategoryService;
+import pl.edu.pg.eti.kask.app.category.service.CategoryService;
 import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.util.UUID;
