@@ -58,7 +58,7 @@ public class RecipeEdit implements Serializable {
     }
 
     public String saveAction() {
-        service.updateForCallerPrincipal(factory.updateRecipe().apply(service.find(id).orElseThrow(), recipe));
+        service.updateForCallerPrincipal(factory.updateRecipe().apply(service.findForCallerPrincipal(id).orElseThrow(), recipe));
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
         return viewId + "?faces-redirect=true&includeViewParams=true";
     }

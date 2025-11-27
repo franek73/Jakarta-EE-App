@@ -12,7 +12,7 @@
         <meta name="keywords" content="Jakrata EE app"/>
         <meta name="author" content="Franciszek Gwarek"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Simple recipe Jakarta EE app</title>
+        <title>#{messages.page_description}</title>
 
         <h:outputStylesheet library="webjars" name="mdb-ui-kit/6.4.0/css/mdb.min.css"/>
         <h:outputStylesheet library="default" name="css/main.css"/>
@@ -23,8 +23,8 @@
     <h:body>
         <div class="container">
             <header class="mb-4 mt-4">
-                <img src="#{resource['image/logo.png']}" alt="Logo" class="me-3" style="height:100px;"/>
-                <h1>Simple recipe's Jakarta EE app</h1>
+                <img src="#{resource['default/img/logo.png']}" alt="Logo" class="me-3" style="height:100px;"/>
+                <h1>#{messages.page_description}</h1>
                 <div class="container d-flex  align-items-center justify-content-end">
                     <h:form styleClass="container d-flex  align-items-center justify-content-end"
                             rendered="#{facesContext.externalContext.userPrincipal != null}">

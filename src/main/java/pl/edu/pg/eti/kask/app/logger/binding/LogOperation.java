@@ -1,4 +1,4 @@
-package pl.edu.pg.eti.kask.app.authorization.interceptor.binding;
+package pl.edu.pg.eti.kask.app.logger.binding;
 
 import jakarta.enterprise.util.Nonbinding;
 import jakarta.interceptor.InterceptorBinding;
@@ -9,8 +9,8 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface AllowRoles {
+public @interface LogOperation {
 
     @Nonbinding
-    String[] value() default {};
+    String value() default "";
 }

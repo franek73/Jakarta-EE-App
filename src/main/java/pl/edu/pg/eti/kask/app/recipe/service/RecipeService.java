@@ -7,7 +7,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
 import lombok.NoArgsConstructor;
-import pl.edu.pg.eti.kask.app.authorization.interceptor.binding.LogOperation;
+import pl.edu.pg.eti.kask.app.logger.binding.LogOperation;
 import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.category.repository.api.CategoryRepository;
