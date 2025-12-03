@@ -20,4 +20,6 @@ public class RecipeEditModel {
     private Difficulty difficulty;
 
     private UserModel author;
+
+    private Long version;
 }

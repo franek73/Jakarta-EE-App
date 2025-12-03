@@ -4,8 +4,12 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
+import pl.edu.pg.eti.kask.app.recipe.entity.Recipe_;
 import pl.edu.pg.eti.kask.app.recipe.respository.api.RecipeRepository;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 
@@ -26,10 +30,15 @@ public class RecipePersistenceRepository implements RecipeRepository {
     @Override
     public Optional<Recipe> findByIdAndUser(UUID id, User user) {
         try {
-            return Optional.of(em.createQuery("select r from Recipe r where r.id = :id and r.author = :author", Recipe.class)
-                    .setParameter("author", user)
-                    .setParameter("id", id)
-                    .getSingleResult());
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Recipe> query = cb.createQuery(Recipe.class);
+            Root<Recipe> root = query.from(Recipe.class);
+            query.select(root)
+                    .where(cb.and(
+                            cb.equal(root.get(Recipe_.author), user),
+                            cb.equal(root.get(Recipe_.id), id)
+                    ));
+            return Optional.of(em.createQuery(query).getSingleResult());
         } catch (NoResultException ex) {
             return Optional.empty();
         }
@@ -37,24 +46,33 @@ public class RecipePersistenceRepository implements RecipeRepository {
 
     @Override
     public List<Recipe> findAllByCategoryAndUser(Category category, User user) {
-        return em.createQuery("select r from Recipe r where r.category = :category and r.author = :author", Recipe.class)
-                .setParameter("category", category)
-                .setParameter("author", user)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Recipe> query = cb.createQuery(Recipe.class);
+        Root<Recipe> root = query.from(Recipe.class);
+        query.select(root)
+                .where(cb.equal(root.get(Recipe_.category), category))
+                .where(cb.equal(root.get(Recipe_.author), user));
+        return em.createQuery(query).getResultList();
     }
 
     @Override
     public List<Recipe> findAllByUser(User user) {
-        return em.createQuery("select r from Recipe r where r.author = :author", Recipe.class)
-                .setParameter("author", user)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Recipe> query = cb.createQuery(Recipe.class);
+        Root<Recipe> root = query.from(Recipe.class);
+        query.select(root)
+                .where(cb.equal(root.get(Recipe_.author), user));
+        return em.createQuery(query).getResultList();
     }
 
     @Override
     public List<Recipe> findAllByCategory(Category category) {
-        return em.createQuery("select r from Recipe r where r.category = :category", Recipe.class)
-                .setParameter("category", category)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Recipe> query = cb.createQuery(Recipe.class);
+        Root<Recipe> root = query.from(Recipe.class);
+        query.select(root)
+                .where(cb.equal(root.get(Recipe_.category), category));
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -64,7 +82,11 @@ public class RecipePersistenceRepository implements RecipeRepository {
 
     @Override
     public List<Recipe> findAll() {
-        return em.createQuery("select r from Recipe r", Recipe.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Recipe> query = cb.createQuery(Recipe.class);
+        Root<Recipe> root = query.from(Recipe.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override

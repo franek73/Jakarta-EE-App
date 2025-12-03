@@ -13,6 +13,7 @@ import pl.edu.pg.eti.kask.app.category.entity.Category;
 import pl.edu.pg.eti.kask.app.category.model.CategoryModel;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeModel;
 import pl.edu.pg.eti.kask.app.category.service.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.model.RecipesModel;
 import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.IOException;
@@ -32,8 +33,7 @@ public class CategoryView implements Serializable {
 
     private final ModelFunctionFactory factory;
 
-    @Getter
-    private List<RecipeModel> recipes;
+    private RecipesModel recipes;
 
     @Setter
     @Getter
@@ -62,16 +62,20 @@ public class CategoryView implements Serializable {
         if (category.isPresent()) {
             this.category = factory.categoryToModel().apply(category.get());
 
-            this.recipes = recipeService.findAllForCallerPrincipalByCategory(id).stream()
-                    .map(factory.recipeToModel())
-                    .collect(Collectors.toList());
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Category not found");
         }
     }
 
-    public void deleteRecipeAction(RecipeModel recipe) {
-        recipeService.deleteForCallerPrincipal(recipe.getId());
+    public RecipesModel getRecipes() {
+        if (recipes == null) {
+            recipes = factory.recipesToModel().apply(recipeService.findAllForCallerPrincipalByCategory(category.getId()));
+        }
+        return recipes;
+    }
+
+    public void deleteRecipeAction(UUID id) {
+        recipeService.deleteForCallerPrincipal(id);
         recipes = null;
     }
 

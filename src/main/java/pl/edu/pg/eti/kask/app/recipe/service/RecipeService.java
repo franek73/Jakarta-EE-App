@@ -84,7 +84,6 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
-    @LogOperation("CREATE_RECIPE")
     public void create(Recipe recipe) {
         if (recipeRepository.find(recipe.getId()).isPresent()) {
             throw new IllegalArgumentException("Recipe already exists.");
@@ -97,13 +96,11 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
-    @LogOperation("DELETE_RECIPE")
     public void delete(UUID id) {
         recipeRepository.delete(id);
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
-    @LogOperation("UPDATE_RECIPE")
     public void update(Recipe recipe) {
         recipeRepository.update(recipe);
     }
@@ -139,6 +136,7 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    @LogOperation("CREATE_RECIPE")
     public void createForCallerPrincipal(Recipe recipe) {
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
                 .orElseThrow(IllegalStateException::new);
@@ -148,9 +146,11 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    @LogOperation("UPDATE_RECIPE")
     public void updateForCallerPrincipal(Recipe recipe) {
         if (securityContext.isCallerInRole(UserRole.ADMIN)) {
             update(recipe);
+            return;
         }
 
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
@@ -161,9 +161,11 @@ public class RecipeService {
     }
 
     @RolesAllowed({UserRole.USER, UserRole.ADMIN})
+    @LogOperation("DELETE_RECIPE")
     public void deleteForCallerPrincipal(UUID id) {
         if (securityContext.isCallerInRole(UserRole.ADMIN)) {
             delete(id);
+            return;
         }
 
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())

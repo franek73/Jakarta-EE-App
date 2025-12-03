@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import pl.edu.pg.eti.kask.app.category.entity.Category;
+import pl.edu.pg.eti.kask.app.entity.VersionAndDatesAuditable;
 import pl.edu.pg.eti.kask.app.user.entity.User;
 
 @Getter
@@ -19,7 +20,7 @@ import pl.edu.pg.eti.kask.app.user.entity.User;
 @EqualsAndHashCode
 @Entity
 @Table(name = "recipes")
-public class Recipe implements Serializable {
+public class Recipe extends VersionAndDatesAuditable implements Serializable {
     @Id
     private UUID id;
 
@@ -38,4 +39,5 @@ public class Recipe implements Serializable {
     @ManyToOne
     @JoinColumn(name = "author_name")
     private User author;
+
 }

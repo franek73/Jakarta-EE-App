@@ -6,13 +6,11 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <ui:define name="content">
+        <f:loadBundle var="msg" basename="pl.edu.pg.eti.kask.app.error.view.i18n.messages"/>
         <article class="">
             <header>
-                <h2>401 - Unauthorized</h2>
+                <h2>#{msg.error_401}</h2>
             </header>
-            <section>
-                <p>No valid credentials.</p>
-            </section>
         </article>
     </ui:define>
 </ui:composition>

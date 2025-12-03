@@ -1,11 +1,15 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import lombok.Getter;
 import lombok.Setter;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
@@ -27,6 +31,8 @@ public class RecipeEdit implements Serializable {
 
     private ModelFunctionFactory factory;
 
+    private final FacesContext facesContext;
+
     @Getter
     private Difficulty[] difficulties;
 
@@ -38,8 +44,9 @@ public class RecipeEdit implements Serializable {
     private RecipeEditModel recipe;
 
     @Inject
-    public RecipeEdit(ModelFunctionFactory factory) {
+    public RecipeEdit(ModelFunctionFactory factory, FacesContext facesContext) {
         this.factory = factory;
+        this.facesContext = facesContext;
     }
 
     @EJB
@@ -57,10 +64,20 @@ public class RecipeEdit implements Serializable {
         }
     }
 
-    public String saveAction() {
-        service.updateForCallerPrincipal(factory.updateRecipe().apply(service.findForCallerPrincipal(id).orElseThrow(), recipe));
-        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-        return viewId + "?faces-redirect=true&includeViewParams=true";
+    public String saveAction() throws IOException {
+        try {
+            service.updateForCallerPrincipal(factory.updateRecipe().apply(service.findForCallerPrincipal(id).orElseThrow(), recipe));
+            String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+            return viewId + "?faces-redirect=true&includeViewParams=true";
+        }
+        catch (EJBException ex) {
+            if (ex.getCause() instanceof OptimisticLockException) {
+                init();
+                facesContext.addMessage(null, new FacesMessage("Version collision."));
+            }
+            return null ;
+        }
+
     }
 
 }

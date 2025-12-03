@@ -30,11 +30,30 @@
                             #{msg.recipes}
                         </div>
 
-                        <h:dataTable id="recipeTable" value="#{categoryView.recipes}" var="recipe"
+                        <h:dataTable id="recipeTable" value="#{categoryView.recipes.recipes}" var="recipe"
                                      styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
                             <h:column>
                                 <h:outputText value="#{recipe.name}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Version</f:facet>
+                                <h:outputText value="#{recipe.version}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Created</f:facet>
+                                <h:outputText value="#{recipe.creationDateTime}">
+                                    <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                                </h:outputText>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Modified</f:facet>
+                                <h:outputText value="#{recipe.modificationDateTime}">
+                                    <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                                </h:outputText>
                             </h:column>
 
                             <h:column>
@@ -52,7 +71,7 @@
                             <h:column>
                                 <h:form>
                                     <h:commandButton styleClass="btn" value="#{msg.delete}"
-                                                     action="#{categoryView.deleteRecipeAction(recipe)}">
+                                                     action="#{categoryView.deleteRecipeAction(recipe.id)}">
                                         <f:ajax execute="@this" render=":recipeTable"/>
                                     </h:commandButton>
                                 </h:form>

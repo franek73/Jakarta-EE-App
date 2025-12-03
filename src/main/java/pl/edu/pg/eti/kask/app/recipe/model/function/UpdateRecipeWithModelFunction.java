@@ -7,6 +7,7 @@ import pl.edu.pg.eti.kask.app.user.entity.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.function.BiFunction;
 
 public class UpdateRecipeWithModelFunction implements BiFunction<Recipe, RecipeEditModel, Recipe>, Serializable {
@@ -24,6 +25,9 @@ public class UpdateRecipeWithModelFunction implements BiFunction<Recipe, RecipeE
                 .author(User.builder()
                         .id(model.getAuthor().getId())
                         .build())
+                .version(model.getVersion())
+                .creationDateTime(entity.getCreationDateTime())
+                .modificationDateTime(entity.getCreationDateTime())
                 .build();
     }
 }

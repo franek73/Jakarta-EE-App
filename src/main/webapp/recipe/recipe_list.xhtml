@@ -19,6 +19,25 @@
                 </h:column>
 
                 <h:column>
+                    <f:facet name="header">Version</f:facet>
+                    <h:outputText value="#{recipe.version}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Created</f:facet>
+                    <h:outputText value="#{recipe.creationDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Modified</f:facet>
+                    <h:outputText value="#{recipe.modificationDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
                     <f:facet name="header">#{msg.view}</f:facet>
                     <h:link outcome="/recipe/recipe_view.xhtml" value="#{msg.view}">
                         <f:param name="id" value="#{recipe.id}"/>

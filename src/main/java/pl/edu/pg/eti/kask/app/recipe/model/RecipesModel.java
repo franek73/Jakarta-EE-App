@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.app.recipe.model;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,12 @@ public class RecipesModel {
         private UUID id;
 
         private String name;
+
+        private Long version;
+
+        private LocalDateTime creationDateTime;
+
+        private LocalDateTime modificationDateTime;
 
     }
 

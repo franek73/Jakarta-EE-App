@@ -16,6 +16,9 @@ public class RecipesToModelFunction implements Function<List<Recipe>, RecipesMod
                         .map(recipe -> RecipesModel.Recipe.builder()
                                 .id(recipe.getId())
                                 .name(recipe.getName())
+                                .version(recipe.getVersion())
+                                .creationDateTime(recipe.getCreationDateTime())
+                                .modificationDateTime(recipe.getModificationDateTime())
                                 .build())
                         .toList())
                 .build();

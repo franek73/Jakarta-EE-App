@@ -23,6 +23,7 @@ public class RecipeToEditModelFunction implements Function<Recipe, RecipeEditMod
                 .description(entity.getDescription())
                 .difficulty(entity.getDifficulty())
                 .author(userToModelFunction.apply(entity.getAuthor()))
+                .version(entity.getVersion())
                 .build();
     }
 }
