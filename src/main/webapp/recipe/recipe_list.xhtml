@@ -6,42 +6,64 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <ui:define name="content">
+        <f:loadBundle var="msg" basename="pl.edu.pg.eti.kask.app.entities.view.i18n.messages"/>
         <article class="text--justified">
-            <header><h2>Recipes</h2></header>
+            <header><h2>#{msg.recipes}</h2></header>
 
-            <h:dataTable value="#{recipeList.recipes.recipes}" var="recipe"
+            <h:dataTable id="recipeTable" value="#{recipeList.recipes.recipes}" var="recipe"
                          styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
+                    <f:facet name="header">#{msg.name}</f:facet>
                     <h:outputText value="#{recipe.name}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">View</f:facet>
-                    <h:link outcome="/recipe/recipe_view.xhtml" value="View">
+                    <f:facet name="header">Version</f:facet>
+                    <h:outputText value="#{recipe.version}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Created</f:facet>
+                    <h:outputText value="#{recipe.creationDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Modified</f:facet>
+                    <h:outputText value="#{recipe.modificationDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">#{msg.view}</f:facet>
+                    <h:link outcome="/recipe/recipe_view.xhtml" value="#{msg.view}">
                         <f:param name="id" value="#{recipe.id}"/>
                     </h:link>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Edit</f:facet>
-                    <h:link outcome="/recipe/recipe_edit.xhtml" value="Edit">
+                    <f:facet name="header">#{msg.edit}</f:facet>
+                    <h:link outcome="/recipe/recipe_edit.xhtml" value="#{msg.edit}">
                         <f:param name="id" value="#{recipe.id}"/>
                     </h:link>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Delete</f:facet>
+                    <f:facet name="header">#{msg.delete}</f:facet>
                     <h:form>
-                        <h:commandButton styleClass="btn" value="Delete"
-                                         action="#{recipeList.deleteAction(recipe)}"/>
+                        <h:commandButton styleClass="btn" value="#{msg.delete}"
+                                         action="#{recipeList.deleteAction(recipe)}">
+                            <f:ajax execute="@this" render=":recipeTable"/>
+                        </h:commandButton>
                     </h:form>
                 </h:column>
 
                 <f:facet name="footer">
                     <h:button styleClass="btn" outcome="/recipe/recipe_create__basic.xhtml"
-                              value="Create new recipe"/>
+                              value="#{msg.create_new_recipe}"/>
                 </f:facet>
             </h:dataTable>
         </article>

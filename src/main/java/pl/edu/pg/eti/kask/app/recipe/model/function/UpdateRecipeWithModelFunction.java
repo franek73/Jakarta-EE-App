@@ -3,9 +3,11 @@ package pl.edu.pg.eti.kask.app.recipe.model.function;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeEditModel;
+import pl.edu.pg.eti.kask.app.user.entity.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.function.BiFunction;
 
 public class UpdateRecipeWithModelFunction implements BiFunction<Recipe, RecipeEditModel, Recipe>, Serializable {
@@ -20,6 +22,12 @@ public class UpdateRecipeWithModelFunction implements BiFunction<Recipe, RecipeE
                 .creationDate(LocalDate.now())
                 .difficulty(model.getDifficulty())
                 .category(entity.getCategory())
+                .author(User.builder()
+                        .id(model.getAuthor().getId())
+                        .build())
+                .version(model.getVersion())
+                .creationDateTime(entity.getCreationDateTime())
+                .modificationDateTime(entity.getCreationDateTime())
                 .build();
     }
 }

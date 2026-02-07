@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.Conversation;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
@@ -9,13 +10,12 @@ import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.entity.Difficulty;
-import pl.edu.pg.eti.kask.app.recipe.model.CategoryModel;
+import pl.edu.pg.eti.kask.app.category.model.CategoryModel;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeCreateModel;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
-import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+import pl.edu.pg.eti.kask.app.category.service.CategoryService;
+import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,11 +26,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(force = true)
 public class RecipeCreate implements Serializable {
 
-    private final RecipeService recipeService;
+    private RecipeService recipeService;
 
-    private final CategoryService categoryService;
+    private CategoryService categoryService;
 
-    private final ModelFunctionFactory factory;
+    private ModelFunctionFactory factory;
 
     @Getter
     private RecipeCreateModel recipe;
@@ -43,11 +43,19 @@ public class RecipeCreate implements Serializable {
 
     private final Conversation conversation;
 
-    @Inject public RecipeCreate(RecipeService recipeService, CategoryService categoryService, ModelFunctionFactory factory, Conversation conversation) {
-        this.recipeService = recipeService;
-        this.categoryService = categoryService;
+    @Inject public RecipeCreate(ModelFunctionFactory factory, Conversation conversation) {
         this.factory = factory;
         this.conversation = conversation;
+    }
+
+    @EJB
+    public void setRecipeService(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
+
+    @EJB
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     public void init() {
@@ -81,7 +89,7 @@ public class RecipeCreate implements Serializable {
     }
 
     public String saveAction() {
-        recipeService.create(factory.modelToRecipe().apply(recipe));
+        recipeService.createForCallerPrincipal(factory.modelToRecipe().apply(recipe));
         conversation.end();
         return "/recipe/recipe_list.xhtml?faces-redirect=true";
     }

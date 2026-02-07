@@ -34,7 +34,8 @@ public class User implements Serializable {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    private Role role;
+    @Column(name = "role")
+    private String role;
 
     @ToString.Exclude
     @Column(nullable = false)
@@ -46,6 +47,6 @@ public class User implements Serializable {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author")
     List<Recipe> userRecipes;
 }

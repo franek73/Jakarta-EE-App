@@ -1,6 +1,10 @@
 package pl.edu.pg.eti.kask.app.component;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import pl.edu.pg.eti.kask.app.category.dto.function.CategoriesToResponseFunction;
+import pl.edu.pg.eti.kask.app.category.dto.function.CategoryToResponseFunction;
+import pl.edu.pg.eti.kask.app.category.dto.function.RequestToCategoryFunction;
+import pl.edu.pg.eti.kask.app.category.dto.function.UpdateCategoryWithRequestFunction;
 import pl.edu.pg.eti.kask.app.recipe.dto.function.*;
 import pl.edu.pg.eti.kask.app.user.dto.function.*;
 

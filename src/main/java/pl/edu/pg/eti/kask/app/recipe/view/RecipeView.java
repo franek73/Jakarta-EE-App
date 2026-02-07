@@ -1,7 +1,8 @@
 package pl.edu.pg.eti.kask.app.recipe.view;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,18 +11,18 @@ import lombok.Setter;
 import pl.edu.pg.eti.kask.app.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.app.recipe.entity.Recipe;
 import pl.edu.pg.eti.kask.app.recipe.model.RecipeModel;
-import pl.edu.pg.eti.kask.app.recipe.service.api.RecipeService;
+import pl.edu.pg.eti.kask.app.recipe.service.RecipeService;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
+@ViewScoped
 @Named
 public class RecipeView implements Serializable {
 
-    private final RecipeService service;
+    private RecipeService service;
 
     private final ModelFunctionFactory factory;
 
@@ -33,13 +34,17 @@ public class RecipeView implements Serializable {
     private RecipeModel recipe;
 
     @Inject
-    public RecipeView(RecipeService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public RecipeView(ModelFunctionFactory factory) {
         this.factory = factory;
     }
 
+    @EJB
+    public void setService(RecipeService service) {
+        this.service = service;
+    }
+
     public void init() throws IOException {
-        Optional<Recipe> recipe = service.find(id);
+        Optional<Recipe> recipe = service.findForCallerPrincipal(id);
         if (recipe.isPresent()) {
             this.recipe = factory.recipeToModel().apply(recipe.get());
         } else {

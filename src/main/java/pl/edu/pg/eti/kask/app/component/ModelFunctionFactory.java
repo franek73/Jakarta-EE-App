@@ -1,7 +1,11 @@
 package pl.edu.pg.eti.kask.app.component;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import pl.edu.pg.eti.kask.app.category.model.function.CategoryToEditModelFunction;
+import pl.edu.pg.eti.kask.app.category.model.function.*;
 import pl.edu.pg.eti.kask.app.recipe.model.function.*;
+import pl.edu.pg.eti.kask.app.user.model.function.UserToModelFunction;
+import pl.edu.pg.eti.kask.app.user.model.function.UsersToModelFunction;
 
 @ApplicationScoped
 public class ModelFunctionFactory {
@@ -15,7 +19,7 @@ public class ModelFunctionFactory {
     }
 
     public RecipeToEditModelFunction recipeToEditModel() {
-        return new RecipeToEditModelFunction();
+        return new RecipeToEditModelFunction(userToModel());
     }
 
     public ModelToRecipeFunction modelToRecipe() {
@@ -32,5 +36,25 @@ public class ModelFunctionFactory {
 
     public CategoriesToModelFunction categoriesToModel() {
         return new CategoriesToModelFunction();
+    }
+
+    public UserToModelFunction userToModel() {
+        return new UserToModelFunction();
+    }
+
+    public UsersToModelFunction usersToModel() {
+        return new UsersToModelFunction();
+    }
+
+    public ModelToCategoryFunction modelToCategory() {
+        return new ModelToCategoryFunction();
+    }
+
+    public CategoryToEditModelFunction categoryToEditModel() {
+        return new CategoryToEditModelFunction();
+    }
+
+    public UpdateCategoryWithModelFunction updateCategory() {
+        return new UpdateCategoryWithModelFunction();
     }
 }

@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.app.user.controller.rest;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,14 +12,12 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.app.component.DtoFunctionFactory;
-import pl.edu.pg.eti.kask.app.recipe.controller.api.RecipeController;
-import pl.edu.pg.eti.kask.app.recipe.service.api.CategoryService;
 import pl.edu.pg.eti.kask.app.user.controller.api.UserController;
 import pl.edu.pg.eti.kask.app.user.dto.GetUserResponse;
 import pl.edu.pg.eti.kask.app.user.dto.GetUsersResponse;
 import pl.edu.pg.eti.kask.app.user.dto.PatchUserRequest;
 import pl.edu.pg.eti.kask.app.user.dto.PutUserRequest;
-import pl.edu.pg.eti.kask.app.user.service.api.UserService;
+import pl.edu.pg.eti.kask.app.user.service.UserService;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
@@ -31,7 +30,7 @@ import java.util.logging.Level;
 @Log
 public class UserRestController implements UserController {
 
-    private final UserService service;
+    private UserService service;
 
     private final DtoFunctionFactory factory;
 
@@ -45,11 +44,15 @@ public class UserRestController implements UserController {
     }
 
     @Inject
-    public UserRestController(UserService service, DtoFunctionFactory factory,
+    public UserRestController(DtoFunctionFactory factory,
                               @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setService(UserService service) {
+        this.service = service;
     }
 
     @Override
