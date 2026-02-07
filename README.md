@@ -45,5 +45,7 @@ mvn clean package
 To build the project, run:
 
 ```bash
-mvn clean package
+mvn -P liberty liberty:dev
 ```
+
+The website will be available at: http://localhost:9080/jakarta-ee-project
